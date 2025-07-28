@@ -3,6 +3,9 @@ resources:
 
 
 images:
+- name: alex62626/matchfit
+  newName: alex62626/matchfit
+  newTag: 783e67c
 - name: your-registry/your-repo
   newTag: dev-${SHORT_SHA}
 
