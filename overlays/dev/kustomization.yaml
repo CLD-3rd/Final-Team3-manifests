@@ -1,12 +1,16 @@
-bases:
-  - ../base
 
 images:
-  - name: your-registry/your-repo
-    newTag: dev-${SHORT_SHA}
+- name: alex62626/matchfit
+  newName: a0da19c
+- name: your-registry/your-repo
+  newTag: dev-${SHORT_SHA}
 
 
 configMapGenerator:
-  - name: app-config
-    literals:
-      - SPRING_PROFILES_ACTIVE=dev
+- literals:
+  - SPRING_PROFILES_ACTIVE=dev
+  name: app-config
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../base
