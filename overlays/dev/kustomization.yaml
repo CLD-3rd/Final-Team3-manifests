@@ -1,0 +1,12 @@
+bases:
+  - ../base
+
+images:
+  - name: your-registry/your-repo
+    newTag: dev-${SHORT_SHA}
+
+
+configMapGenerator:
+  - name: app-config
+    literals:
+      - SPRING_PROFILES_ACTIVE=dev
