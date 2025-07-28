@@ -17,10 +17,10 @@ spec:
     spec:
       containers:
         - name: backend
-          image: alex62626/matchfit:latest   # CI에서 sed로 교체될 부분
+          image: alex62626/matchfit:latest
           ports:
             - containerPort: 8080
-	  envFrom:
+          envFrom:
             - configMapRef:
                 name: app-config
           readinessProbe:
@@ -37,9 +37,9 @@ spec:
             periodSeconds: 20
           resources:
             requests:
-              cpu:    "100m"
+              cpu: "100m"
               memory: "128Mi"
             limits:
-              cpu:    "500m"
+              cpu: "500m"
               memory: "256Mi"
 
