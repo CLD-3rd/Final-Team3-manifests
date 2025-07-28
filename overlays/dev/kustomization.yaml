@@ -1,3 +1,6 @@
+resources:
+- ../../base
+
 
 images:
 - name: alex62626/matchfit
@@ -12,5 +15,3 @@ configMapGenerator:
   name: app-config
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-- ../base
