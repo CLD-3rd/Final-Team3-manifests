@@ -4,7 +4,7 @@ resources:
 
 images:
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
-  newTag: eb27ad2
+  newTag: 5fd1b95
 - name: alex62626/matchfit
   newName: alex62626/matchfit
   newTag: 783e67c
