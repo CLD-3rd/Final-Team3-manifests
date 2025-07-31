@@ -1,0 +1,9 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelector:
+      matchLabels:
+        app: matchfit
+    serviceMonitorNamespaceSelector:
+      matchNames:
+        - monitoring
+        - default
