@@ -1,6 +1,8 @@
 resources:
 - ../../base/app
 
+namespace: argocd
+namePrefix: argocd-
 
 images:
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
@@ -11,10 +13,10 @@ images:
 - name: your-registry/your-repo
   newTag: dev-${SHORT_SHA}
 
-
 configMapGenerator:
-- literals:
-  - SPRING_PROFILES_ACTIVE=dev
-  name: app-config
+  - name: env-vars
+    envs:
+      - argocd.env
+
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
