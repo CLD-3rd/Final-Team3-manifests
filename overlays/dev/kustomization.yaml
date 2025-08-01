@@ -6,7 +6,7 @@ namePrefix: argocd-
 
 images:
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
-  newTag: 6f2c7ab
+  newTag: 4f47ad6
 - name: alex62626/matchfit
   newName: alex62626/matchfit
   newTag: 783e67c
@@ -14,9 +14,9 @@ images:
   newTag: dev-${SHORT_SHA}
 
 configMapGenerator:
-  - name: env-vars
-    envs:
-      - argocd.env
+- envs:
+  - argocd.env
+  name: env-vars
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
