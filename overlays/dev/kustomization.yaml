@@ -1,18 +1,22 @@
 resources:
 - ../../base/app
-- sealed-secret.yaml
 
 namespace: argocd
 namePrefix: argocd-
 
 images:
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
-  newTag: 0b44490
+  newTag: 6f2c7ab
 - name: alex62626/matchfit
   newName: alex62626/matchfit
   newTag: 783e67c
 - name: your-registry/your-repo
   newTag: dev-${SHORT_SHA}
+
+configMapGenerator:
+  - name: env-vars
+    envs:
+      - argocd.env
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
