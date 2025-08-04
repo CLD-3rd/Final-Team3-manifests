@@ -1,5 +1,6 @@
 resources:
 - ../../base/app
+- sealed-secret.yaml
 
 namespace: argocd
 namePrefix: argocd-
