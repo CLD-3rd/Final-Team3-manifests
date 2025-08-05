@@ -8,7 +8,7 @@ images:
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
   newTag: 302845b
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-test-ecr
-  newTag: 0d477d8
+  newTag: 3646f54
 - name: alex62626/matchfit
   newName: alex62626/matchfit
   newTag: 783e67c
