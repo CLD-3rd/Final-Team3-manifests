@@ -1,5 +1,6 @@
 resources:
 - ../../base/app
+- sealed-secret.yaml
 
 namespace: argocd
 namePrefix: argocd-
@@ -15,10 +16,10 @@ images:
 - name: your-registry/your-repo
   newTag: dev-${SHORT_SHA}
 
-configMapGenerator:
-- envs:
-  - argocd.env
-  name: env-vars
+# configMapGenerator:
+# - envs:
+#   - argocd.env
+#   name: env-vars
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
