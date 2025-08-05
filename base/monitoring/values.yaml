@@ -2,7 +2,7 @@ prometheus:
   prometheusSpec:
     serviceMonitorSelector:
       matchLabels:
-        app: matchfit
+        app: backend
     serviceMonitorNamespaceSelector:
       matchNames:
         - monitoring
