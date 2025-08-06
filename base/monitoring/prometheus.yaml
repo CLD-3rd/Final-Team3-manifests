@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: "https://github.com/CLD-3rd/Final-Team3-manifests.git"
     targetRevision: feat/monitoring
-    path: manifest/base/monitoring      # values.yaml, ingress.yaml, service-monitor.yaml 위치
+    path: base/monitoring      # values.yaml, ingress.yaml, service-monitor.yaml 위치
     # chart: kube-prometheus-stack
     # helm:
     #   valueFiles:
