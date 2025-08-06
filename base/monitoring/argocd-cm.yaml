@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  resource.customizations.monitoring.coreos.com_Prometheus: |
+    ignoreDifferences:
+      - group: monitoring.coreos.com
+        kind: Prometheus
+        jsonPointers:
+          - /metadata/annotations
