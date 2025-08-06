@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: matchfit-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
+    targetRevision: develop   # 혹은 적절한 브랜치
+    path: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
