@@ -10,6 +10,8 @@ metadata:
     alb.ingress.kubernetes.io/group.name: grafana
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/healthcheck-path: /login
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:061039804626:certificate/6beca310-1a10-4262-848e-119061924427
+    external-dns.alpha.kubernetes.io/hostname: grafana.match-fit.store
 spec:
   rules:
     - host: grafana.match-fit.store
