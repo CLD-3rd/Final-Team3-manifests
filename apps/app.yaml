@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
-    targetRevision: feat/app
+    targetRevision: test
     path: overlays/dev
   destination:
     server: https://kubernetes.default.svc
