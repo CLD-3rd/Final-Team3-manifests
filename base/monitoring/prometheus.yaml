@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/CLD-3rd/Final-Team3-manifests.git"
+    targetRevision: feat/monitoring
+    path: manifest/base/monitoring      # values.yaml, ingress.yaml, service-monitor.yaml 위치
+    chart: kube-prometheus-stack
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
