@@ -8,7 +8,7 @@ namePrefix: argocd-
 
 images:
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
-  newTag: 31607d5
+  newTag: 2d6a622
 - name: alex62626/matchfit
   newName: alex62626/matchfit
   newTag: 783e67c
