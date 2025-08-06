@@ -4,7 +4,7 @@ resources:
 
 # 이미지 태그를 나중에 오버레이에서 바꿀 수 있도록 변수 선언
 images:
-  - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-test-ecr
+  - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
     newTag: latest
 
 commonLabels:
