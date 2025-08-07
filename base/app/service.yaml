@@ -5,8 +5,10 @@ metadata:
   namespace: argocd
   labels:
     app: backend
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb-ip"
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: backend
   ports:
