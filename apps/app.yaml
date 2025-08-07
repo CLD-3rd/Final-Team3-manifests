@@ -16,3 +16,15 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: backend
+      namespace: argocd
+      jsonPointers:
+        - /spec/replicas
+  dependsOn:
+    - backend-hpa
+    - external-dns
