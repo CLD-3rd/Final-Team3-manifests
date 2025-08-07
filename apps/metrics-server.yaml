@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: metrics-server
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
     targetRevision: feat/hpa
-    path: base/external-dns
+    path: base/metrics-server
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
@@ -18,3 +18,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+  dependsOn:
+    - matchfit-monitoring

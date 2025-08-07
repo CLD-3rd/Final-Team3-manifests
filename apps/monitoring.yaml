@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
-    targetRevision: develop
+    targetRevision: feat/hpa
     path: base/monitoring
     directory:
       recurse: true
