@@ -10,6 +10,7 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: 58.0.1           # 사용하고자 하는 chart 버전
     helm:
+      skipCrds: false      # ← 이 줄을 추가
       valueFiles:
         - values.yaml              # 아래에 정의할 값 파일
   destination:
