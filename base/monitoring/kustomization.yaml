@@ -3,3 +3,4 @@ resources:
   - service-monitor.yaml
   - prom-stack-app.yaml
   - service-monitor-app.yaml
+  - values.yaml
