@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend-servicemonitor
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
+    targetRevision: test
+    path: base/monitoring/service-monitor.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

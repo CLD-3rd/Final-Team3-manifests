@@ -4,16 +4,14 @@ metadata:
   name: matchfit-backend
   namespace: monitoring
   labels:
-    app: matchfit
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    app: backend
 spec:
   selector:
     matchLabels:
-      app: backend
+      app.kubernetes.io/name: backend
   namespaceSelector:
     matchNames:
-      - argocd
+      - default
   endpoints:
     - port: http
       path: /actuator/prometheus

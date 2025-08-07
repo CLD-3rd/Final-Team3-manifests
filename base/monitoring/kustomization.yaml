@@ -1,6 +1,5 @@
 resources:
   - grafana-alb.yaml
   - service-monitor.yaml
-  - helm-release.yaml
-  - helm-repo.yaml
-  - prometheus.yaml
+  - prom-stack-app.yaml
+  - service-monitor-app.yaml
