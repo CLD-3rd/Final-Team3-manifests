@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: external-dns
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::061039804626:role/matchfit-argocd-externaldns-irsa-role notionvc: 7046f276-e220-4d65-9f26-2925e23c49ce
+    eks.amazonaws.com/role-arn: arn:aws:iam::061039804626:role/matchfit-argocd-externaldns-irsa-role
 ---  
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
