@@ -2,16 +2,16 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: matchfit-backend
-  namespace: argocd
+  namespace: monitoring
   labels:
-    app: backend
+    app: matchfit
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: backend
+      app: backend
   namespaceSelector:
     matchNames:
-      - default
+      - argocd
   endpoints:
     - port: http
       path: /actuator/prometheus
