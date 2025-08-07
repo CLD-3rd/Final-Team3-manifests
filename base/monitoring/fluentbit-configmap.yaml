@@ -46,8 +46,8 @@ data:
         Name                cloudwatch_logs
         Match               *
         region              ap-northeast-2
-        log_group_name      /fluentbit/logs
-        log_stream_prefix   from-fluentbit-
+        log_group_name      /matchfit-fluentbit/logs
+        log_stream_prefix   from-matchfit-
         auto_create_group   true
 
   parsers.conf: |
