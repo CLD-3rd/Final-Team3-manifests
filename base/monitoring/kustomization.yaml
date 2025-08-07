@@ -2,5 +2,4 @@ resources:
   - grafana-alb.yaml
   - service-monitor.yaml
   - prom-stack-app.yaml
-  - service-monitor-app.yaml
   - crds-app.yaml
