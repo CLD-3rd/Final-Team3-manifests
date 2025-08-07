@@ -5,13 +5,14 @@ metadata:
   namespace: monitoring
   labels:
     app: backend
+    release: prom-stack
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: backend
+      app: backend
   namespaceSelector:
     matchNames:
-      - default
+      - argocd 
   endpoints:
     - port: http
       path: /actuator/prometheus
