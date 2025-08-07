@@ -1,14 +1,14 @@
 resources:
 - ../../base/app
-# - ../../base/monitoring
-# - ../../base/external-dns
+- ../../base/monitoring
+- ../../base/external-dns
 
 namespace: argocd
 namePrefix: argocd-
 
 images:
 - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
-  newTag: 6ae9fde
+  newTag: "1556691"
 - name: alex62626/matchfit
   newName: alex62626/matchfit
   newTag: 783e67c
