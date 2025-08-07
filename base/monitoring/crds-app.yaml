@@ -4,16 +4,21 @@ kind: Application
 metadata:
   name: prom-crds
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"  # 가장 먼저 실행
 spec:
   project: default
   source:
-    repoURL: https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.60.0
-    targetRevision: v0.60.0
-    path: bundle.yaml         # CRD 정의가 담긴 bundle
+    repoURL: https://github.com/prometheus-community/helm-charts
+    chart: prometheus-operator-crds
+    targetRevision: 8.0.1 
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring      # CRD 는 네임스페이스 무관, 관례상 지정
+    namespace: monitoring
   syncPolicy:
     automated:
-      prune: true
+      prune: false  # CRD는 prune하지 않음 
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true
