@@ -20,7 +20,7 @@ spec:
         prometheus.io/port: "2020"
         prometheus.io/path: /api/v1/metrics/prometheus
     spec:
-      serviceAccountName: fluent-bit-sa
+      serviceAccountName: fluentbit-sa
       terminationGracePeriodSeconds: 10
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
