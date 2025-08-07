@@ -3,3 +3,4 @@ resources:
   - service-monitor.yaml
   - helm-release.yaml
   - helm-repo.yaml
+  - prometheus.yaml
