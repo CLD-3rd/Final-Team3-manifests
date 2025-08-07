@@ -12,7 +12,7 @@ spec:
           command: ["/bin/sh"]    # 셸을 실행하여 명령 수행
           args:
             - -c
-            - "while true; do wget -q -O- http://backend.default.svc.cluster.local; done"
+            - "while true; do wget -q -O- http://backend.argocd.svc.cluster.local; done"
             # - 무한 루프를 돌면서 backend 서비스로 HTTP 요청을 계속 보냄
             # - wget -q -O-: 응답을 출력 없이 받아오는 명령
             # - backend.default.svc.cluster.local: 클러스터 내부 DNS로 backend 서비스의 ClusterIP 주소
