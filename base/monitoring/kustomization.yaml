@@ -1,6 +1,3 @@
 resources:
   - grafana-alb.yaml
   - service-monitor.yaml
-  - fluentbit-rbac.yaml
-  - fluentbit-configmap.yaml
-  - fluentbit-daemonset.yaml
