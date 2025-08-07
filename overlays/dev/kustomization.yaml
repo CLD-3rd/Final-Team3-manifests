@@ -3,7 +3,7 @@ resources:
 - ../../base/monitoring
 - ../../base/external-dns
 
-namespace: argocd
+# namespace: argocd
 namePrefix: argocd-
 
 images:
