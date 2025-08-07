@@ -12,6 +12,7 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: /api/health
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:061039804626:certificate/6beca310-1a10-4262-848e-119061924427
     external-dns.alpha.kubernetes.io/hostname: grafana.match-fit.store
+    alb.ingress.kubernetes.io/success-codes: "200"
 spec:
   ingressClassName: alb
   rules:
