@@ -21,6 +21,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: prom-stack-kube-prometheus-stack-grafana ## kubectl -n monitoring get svc 로 확인 후, 맞춰주기
+                name: kube-prometheus-stack-grafana ## kubectl -n monitoring get svc 로 확인 후, 맞춰주기
                 port:
                   number: 80  ## kubectl -n monitoring get svc 로 확인 후, 맞춰주기
