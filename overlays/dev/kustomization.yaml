@@ -1,9 +1,9 @@
 resources:
 - ../../base/app
-- ../../base/monitoring
-- ../../base/external-dns
+# - ../../base/monitoring
+# - ../../base/external-dns
 
-# namespace: argocd
+namespace: argocd
 namePrefix: argocd-
 
 images:

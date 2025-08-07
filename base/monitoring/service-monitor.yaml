@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: matchfit-backend
-  namespace: monitoring
+  namespace: argocd
   labels:
     app: backend
 spec:
