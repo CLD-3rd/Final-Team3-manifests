@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: argocd        # 실제 네임스페이스로 변경
+  namespace: argocd
   labels:
     app: backend
 spec:
-  replicas: 2              # 원하는 복제 수
+  replicas: 2
   selector:
     matchLabels:
       app: backend
