@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: externaldns-sa
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: external-dns
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::061039804626:role/matchfit-argocd-externaldns-irsa-role
+---  
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-dns-clusterrole-dev
+  labels:
+    app.kubernetes.io/name: external-dns
+rules:
+  - apiGroups: [""]
+    resources: ["services","endpoints","pods","nodes"]
+    verbs: ["get","watch","list"]
+  - apiGroups: ["extensions","networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get","watch","list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns-viewer-dev
+  labels:
+    app.kubernetes.io/name: external-dns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns-clusterrole-dev
+subjects:
+  - kind: ServiceAccount
+    name: externaldns-sa
+    namespace: kube-system 
