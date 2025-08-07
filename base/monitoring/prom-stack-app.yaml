@@ -3,16 +3,18 @@ kind: Application
 metadata:
   name: prom-stack
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"  # CRD 설치 이후 실행
 spec:
   project: default
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
-    targetRevision: 58.0.1           # 사용하고자 하는 chart 버전
+    targetRevision: 58.0.1
     helm:
-      skipCrds: false      # ← 이 줄을 추가
+      skipCrds: true  # CRD는 별도 App에서 관리
       valueFiles:
-        - values.yaml              # 아래에 정의할 값 파일
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -20,3 +22,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
