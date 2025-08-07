@@ -1,18 +1,22 @@
+# base/monitoring/prometheus-application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: prometheus
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
-    repoURL: "https://github.com/CLD-3rd/Final-Team3-manifests.git"
-    targetRevision: feat/monitoring
-    path: base/monitoring      # values.yaml, ingress.yaml, service-monitor.yaml 위치
-    # chart: kube-prometheus-stack
-    # helm:
-    #   valueFiles:
-    #     - values.yaml
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 60.0.1
+    helm:
+      values: |
+        prometheus:
+          serviceMonitor:
+            selectorNilUsesHelmValues: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -20,8 +24,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true 
-      - Replace=true
-      - SkipHooks=true
