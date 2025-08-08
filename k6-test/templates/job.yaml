@@ -1,0 +1,27 @@
+# k6를 실행하는 Kubernetes Job
+# - PostSync Hook: ArgoCD Sync 후 자동 실행, 성공 시 삭제 → 다음 Sync 때 재실행 가능
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: k6-load-job
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    # (선택) 아래 라인을 주석 해제하고 values.yaml에 restartStamp 값을 바꾸면, 커밋만으로 재실행 트리거 가능
+    # restartedAt: "{{ .Values.restartStamp | default "" }}"
+spec:
+  template:
+    spec:
+      containers:
+        - name: k6
+          image: grafana/k6:0.48.0                # k6 공식 이미지 버전
+          command: ["k6", "run", "/scripts/script.js"]
+          volumeMounts:
+            - name: script
+              mountPath: /scripts                 # /scripts/script.js 경로로 실행
+      volumes:
+        - name: script
+          configMap:
+            name: k6-script                       # 위 ConfigMap 이름과 동일해야 함
+      restartPolicy: Never
+  backoffLimit: 0                                  # 실패 시 재시도 횟수(0이면 재시도 안 함)

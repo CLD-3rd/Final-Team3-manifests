@@ -1,0 +1,36 @@
+# kube-ops-view를 원격 Helm 차트(공식 repo)에서 직접 설치하는 ArgoCD Application
+# - App-of-Apps 루트가 apps/ 폴더를 스캔 중이므로 여기에 두면 자동으로 인식됩니다.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-ops-view                    # ArgoCD UI에 표시될 앱 이름 (고유)
+  namespace: argocd                      # ArgoCD가 설치된 네임스페이스
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"   # (선택) 동기화 순서 지정. 숫자 낮은 게 먼저
+spec:
+  project: default
+  source:
+    repoURL: https://codecentric.github.io/helm-charts  # 원격 Helm 차트 저장소
+    chart: kube-ops-view                                # 사용할 차트 이름
+    targetRevision: "*"                                  # EX: 특정 버전 고정하려면 "v1.2.3"
+    helm:
+      parameters:
+        - name: service.type
+          value: LoadBalancer                            # 외부 접근을 위해 LB로 공개
+      values: |                                          # (선택) value override. 필요 없으면 블록 제거 가능
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+  destination:
+    server: https://kubernetes.default.svc               # 현재 클러스터
+    namespace: kube-system                               # 운영툴은 kube-system 권장
+  syncPolicy:
+    automated:
+      prune: true                                        # 불필요 리소스 자동 삭제
+      selfHeal: true                                     # 드리프트 자동 복구
+    syncOptions:
+      - PruneLast=true                                   # 삭제는 마지막에 수행

@@ -1,0 +1,45 @@
+# values.yaml
+# - k6 스크립트와 옵션을 한 파일에서 관리하기 위함
+# - EX 표시는 팀이 정해서 바꿔 넣을 자리
+
+script: |-
+  import http from 'k6/http';
+  import { check, sleep } from 'k6';
+
+  export const options = {
+    stages: [
+      { duration: '30s', target: 5 },    // 예열
+      { duration: '1m',  target: 20 },   // 부하 증가
+      { duration: '30s', target: 0 },    // 종료
+    ],
+    thresholds: {
+      http_req_duration: ['p(95)<1000'],  // 95% 요청이 1초 이내
+      http_req_failed:   ['rate<0.05'],   // 실패율 < 5%
+    },
+    ext: {
+      output: {
+        'prometheus-remote': {
+          address: 'http://prometheus.monitoring:9090/api/v1/write'
+          # EX) Prometheus 주소/포트는 클러스터 상황에 맞게 확인 후 수정
+          #     kubectl -n monitoring get svc | findstr prometheus
+        }
+      }
+    }
+  };
+
+  const BASE_URL = 'https://EX.api.your-domain.com';  // EX) 실제 대상 API 도메인/URL
+  const ENDPOINTS = [
+    '/EX-login',   // EX) /api/user/login
+    '/EX-list',    // EX) /api/posts/list
+  ];
+
+  export default function () {
+    for (const path of ENDPOINTS) {
+      const res = http.get(`${BASE_URL}${path}`);
+      check(res, { [`GET ${path} status 200`]: (r) => r.status === 200 });
+      sleep(1);
+    }
+  }
+
+# (선택) Sync마다 재실행 트리거가 필요하면 아래 키를 사용:
+# restartStamp: "EX-2025-08-08-0900"
