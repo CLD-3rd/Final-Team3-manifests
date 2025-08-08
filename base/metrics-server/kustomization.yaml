@@ -4,5 +4,6 @@ resources:
   - serviceaccount.yaml
   - rbac.yaml
   - apiservice.yaml
+  - metrics-server-clusterrolebinding.yaml
 
 namespace: kube-system
