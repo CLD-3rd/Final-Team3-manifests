@@ -15,6 +15,7 @@ spec:
         k8s-app: metrics-server
     spec:
       serviceAccountName: metrics-server  # rbac.yaml에 정의된 SA 사용
+      automountServiceAccountToken: true
       containers:
         - name: metrics-server
           image: registry.k8s.io/metrics-server/metrics-server:v0.7.0  # 호환 버전
