@@ -4,3 +4,9 @@ resources:
   - fluentbit-rbac.yaml
   - fluentbit-configmap.yaml
   - fluentbit-daemonset.yaml
+
+
+helmCharts:
+  - name: kube-prometheus-stack
+    namespace: monitoring
+    valuesFile: ./grafana-values.yaml
