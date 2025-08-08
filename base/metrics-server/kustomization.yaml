@@ -3,5 +3,6 @@ resources:
   - service.yaml
   - serviceaccount.yaml
   - rbac.yaml
+  - apiservice.yaml
 
 namespace: kube-system
