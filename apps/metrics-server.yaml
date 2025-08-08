@@ -20,3 +20,8 @@ spec:
       - CreateNamespace=true
   dependsOn:
     - matchfit-monitoring
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      jsonPointers:
+        - /spec/dependsOn

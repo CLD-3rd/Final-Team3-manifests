@@ -28,3 +28,8 @@ spec:
   dependsOn:
     - backend-hpa
     - external-dns
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      jsonPointers:
+        - /spec/dependsOn

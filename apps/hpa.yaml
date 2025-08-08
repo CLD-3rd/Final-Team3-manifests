@@ -18,3 +18,8 @@ spec:
       selfHeal: true
   dependsOn:
     - metrics-server
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      jsonPointers:
+        - /spec/dependsOn
