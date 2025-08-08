@@ -14,5 +14,5 @@ spec:
       - argocd
   endpoints:
     - port: http
-      path: /metrics
+      path: /api/v1/metrics
       interval: 30s
