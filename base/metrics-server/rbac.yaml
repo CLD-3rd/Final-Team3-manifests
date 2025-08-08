@@ -1,4 +1,3 @@
-# ClusterRole: metrics.k8s.io 접근 허용
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -9,7 +8,6 @@ rules:
     verbs: ["get", "list", "watch"]
 
 ---
-# ClusterRole: metrics-server가 노드 및 Pod 정보 수집 가능
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -23,26 +21,19 @@ rules:
     verbs: ["get", "list", "watch"]
 
 ---
-# ClusterRole: metrics-server용 metrics 전용 권한 (추가)
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: system:metrics-server
 rules:
   - apiGroups: [""]
-    resources:
-      - nodes
-      - nodes/stats
-      - nodes/metrics
-      - pods
+    resources: ["nodes", "nodes/stats", "nodes/metrics", "pods"]
     verbs: ["get", "list", "watch"]
-
 ---
-# ClusterRoleBinding: metrics-server → metrics-server 권한
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: metrics-server-binding
+  name: metrics-server-metrics
 subjects:
   - kind: ServiceAccount
     name: metrics-server
@@ -53,23 +44,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 
 ---
-# ClusterRoleBinding: metrics-server → system:metrics-reader
-# (metrics.k8s.io 읽기 전용 권한)
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: metrics-server:system:auth-delegator
-subjects:
-  - kind: ServiceAccount
-    name: metrics-server
-    namespace: kube-system
-roleRef:
-  kind: ClusterRole
-  name: system:auth-delegator
-  apiGroup: rbac.authorization.k8s.io
-
----
-# ClusterRoleBinding: metrics-server → system:metrics-server (추가)
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -80,11 +54,23 @@ subjects:
     namespace: kube-system
 roleRef:
   kind: ClusterRole
-  name: system:metrics-server
+  name: system:auth-delegator
   apiGroup: rbac.authorization.k8s.io
 
 ---
-# Role: kube-system 네임스페이스의 인증 관련 ConfigMap 접근
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: metrics-server-system-metrics-server
+subjects:
+  - kind: ServiceAccount
+    name: metrics-server
+    namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: system:metrics-server
+  apiGroup: rbac.authorization.k8s.io
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -95,9 +81,7 @@ rules:
     resources: ["configmaps"]
     resourceNames: ["extension-apiserver-authentication"]
     verbs: ["get", "list", "watch"]
-
 ---
-# RoleBinding: metrics-server → kube-system ConfigMap 읽기 권한
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
