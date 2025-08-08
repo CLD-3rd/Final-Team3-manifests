@@ -5,5 +5,6 @@ resources:
   - fluentbit-configmap.yaml
   - fluentbit-daemonset.yaml
   - argocd-monitor.yaml     
+  - argocd-metrics-service.yaml
   - fluentbit-monitor.yaml  
   - fluentbit-service.yaml 
