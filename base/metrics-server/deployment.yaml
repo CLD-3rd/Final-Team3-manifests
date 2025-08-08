@@ -24,17 +24,7 @@ spec:
             - --secure-port=4443      # metrics-server가 HTTPS 통신에 사용하는 포트
             - --kubelet-insecure-tls  # self-signed kubelet 인증서를 허용
             - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-            - --metric-resolution=15s
-            - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
           ports:
             - containerPort: 4443  # secure-port와 일치
               name: main-port
               protocol: TCP
-          volumeMounts:
-            - name: proxy-ca
-              mountPath: /etc/kubernetes/pki/
-              readOnly: true
-      volumes:
-        - name: proxy-ca
-          configMap:
-            name: extension-apiserver-authentication
