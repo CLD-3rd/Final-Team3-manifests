@@ -6,3 +6,4 @@ resources:
   - fluentbit-daemonset.yaml
   - argocd-monitor.yaml     
   - fluentbit-monitor.yaml  
+  - fluentbit-service.yaml 
