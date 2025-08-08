@@ -7,7 +7,7 @@ spec:
   scaleTargetRef:                  # HPA가 확장/축소할 대상 리소스를 지정
     apiVersion: apps/v1            # 타겟 리소스의 API 버전
     kind: Deployment               # 리소스 종류
-    name: backend                  # 타겟 Deployment 이름
+    name: argocd-backend           # 타겟 Deployment 이름
   minReplicas: 2                   # 최소 Pod 개수
   maxReplicas: 5                   # 최대 Pod 개수
   metrics:                         # 스케일 기준 메트릭 정의
