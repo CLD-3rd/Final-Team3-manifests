@@ -27,4 +27,3 @@ spec:
       namespace: argocd
       jsonPointers:
         - /spec/replicas
-
