@@ -4,5 +4,6 @@ resources:
   - fluentbit-rbac.yaml
   - fluentbit-configmap.yaml
   - fluentbit-daemonset.yaml
-  - fluentbit-service.yaml      
-  - fluentbit-servicemonitor.yaml 
+  - argocd-monitor.yaml     
+  - fluentbit-monitor.yaml  
+  - fluentbit-service.yaml 
