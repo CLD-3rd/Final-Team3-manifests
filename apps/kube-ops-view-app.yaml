@@ -1,36 +1,53 @@
-# kube-ops-view를 원격 Helm 차트(공식 repo)에서 직접 설치하는 ArgoCD Application
-# - App-of-Apps 루트가 apps/ 폴더를 스캔 중이므로 여기에 두면 자동으로 인식됩니다.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-ops-view                    # ArgoCD UI에 표시될 앱 이름 (고유)
-  namespace: argocd                      # ArgoCD가 설치된 네임스페이스
+  name: kube-ops-view
+  namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "20"   # (선택) 동기화 순서 지정. 숫자 낮은 게 먼저
+    argocd.argoproj.io/sync-wave: "20"
 spec:
   project: default
   source:
-    repoURL: https://codecentric.github.io/helm-charts  # 원격 Helm 차트 저장소
-    chart: kube-ops-view                                # 사용할 차트 이름
-    targetRevision: "*"                                  # EX: 특정 버전 고정하려면 "v1.2.3"
+    repoURL: https://codecentric.github.io/helm-charts
+    chart: kube-ops-view
+    targetRevision: "*"
     helm:
-      parameters:
-        - name: service.type
-          value: LoadBalancer                            # 외부 접근을 위해 LB로 공개
-      values: |                                          # (선택) value override. 필요 없으면 블록 제거 가능
+      values: |
+        # Service는 내부(ClusterIP), 외부노출은 Ingress(ALB)로만
+        service:
+          type: ClusterIP
+
+        # Ingress(ALB) 활성화 + HTTPS + ExternalDNS
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/scheme: internet-facing
+            alb.ingress.kubernetes.io/target-type: ip
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: '443'
+            # EX) ACM 인증서 ARN 꼭 교체
+            alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:EX-ACCOUNT:certificate/EX-UUID
+            # EX) ExternalDNS가 A레코드 자동 생성
+            external-dns.alpha.kubernetes.io/hostname: ops.team.matchfit.com
+          hosts:
+            - host: ops.team.matchfit.com     # EX: 팀 도메인
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - ops.team.matchfit.com
+              secretName: kube-ops-view-cert   # cert-manager 쓰면 사용, ACM 직연동이면 무시돼도 OK
+
+        # 권장 리소스(과도한 스케줄 실패 방지)
         resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 500m
-            memory: 256Mi
+          requests: { cpu: 100m, memory: 128Mi }
+          limits:   { cpu: 500m, memory: 256Mi }
   destination:
-    server: https://kubernetes.default.svc               # 현재 클러스터
-    namespace: kube-system                               # 운영툴은 kube-system 권장
+    server: https://kubernetes.default.svc
+    namespace: kube-system
   syncPolicy:
     automated:
-      prune: true                                        # 불필요 리소스 자동 삭제
-      selfHeal: true                                     # 드리프트 자동 복구
-    syncOptions:
-      - PruneLast=true                                   # 삭제는 마지막에 수행
+      prune: true
+      selfHeal: true
