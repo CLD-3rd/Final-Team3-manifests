@@ -19,6 +19,15 @@ spec:
       containers:
         - name: backend
           image: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr:latest
+          command: ["java"]
+          args: ["-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "512Mi"
           ports:
             - containerPort: 8080
           envFrom:

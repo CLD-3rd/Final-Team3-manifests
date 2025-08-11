@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-server
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server
+spec:
+  ports:
+    - port: 443  # 클러스터 내부 통신용, HTTPS 기반
+      protocol: TCP
+      targetPort: main-port
+  selector:
+    k8s-app: metrics-server  # pod selector

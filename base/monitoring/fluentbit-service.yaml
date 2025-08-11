@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fluent-bit
+  namespace: monitoring
+  labels:
+    app: fluentbit
+spec:
+  ports:
+  - port: 2020
+    targetPort: 2020
+    name: http
+    protocol: TCP
+  selector:
+    app: fluentbit
+  type: ClusterIP

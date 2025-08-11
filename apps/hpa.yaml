@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: matchfit-app
+  name: backend-hpa
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   project: default
   source:
     repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
     targetRevision: feat/hpa
-    path: overlays/dev
+    path: base/hpa
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
@@ -18,12 +18,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - RespectIgnoreDifferences=true
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      name: backend
-      namespace: argocd
-      jsonPointers:
-        - /spec/replicas
+

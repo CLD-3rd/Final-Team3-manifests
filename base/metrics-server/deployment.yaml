@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-server
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  template:
+    metadata:
+      labels:
+        k8s-app: metrics-server
+    spec:
+      serviceAccountName: metrics-server  # rbac.yaml에 정의된 SA 사용
+      automountServiceAccountToken: true
+      containers:
+        - name: metrics-server
+          image: registry.k8s.io/metrics-server/metrics-server:v0.7.2  # 호환 버전
+          args:
+            - --cert-dir=/tmp         # TLS 인증서 임시 저장 경로
+            - --secure-port=4443      # metrics-server가 HTTPS 통신에 사용하는 포트
+            - --kubelet-insecure-tls  # self-signed kubelet 인증서를 허용
+            - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+          ports:
+            - containerPort: 4443  # secure-port와 일치
+              name: main-port
+              protocol: TCP
