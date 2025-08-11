@@ -9,3 +9,4 @@ resources:
   - fluentbit-monitor.yaml  
   - fluentbit-service.yaml 
   - cloudwatch-exporter.yaml
+  - dashboard-configmaps.yaml
