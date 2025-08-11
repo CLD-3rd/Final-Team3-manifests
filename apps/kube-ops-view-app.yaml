@@ -10,10 +10,9 @@ spec:
   source:
     repoURL: https://codecentric.github.io/helm-charts
     chart: kube-ops-view
-    targetRevision: "*"
+    targetRevision: 5.0.4
     helm:
       values: |
-        # Service는 내부(ClusterIP), 외부노출은 Ingress(ALB)로만
         service:
           type: ClusterIP
 
@@ -26,12 +25,10 @@ spec:
             alb.ingress.kubernetes.io/target-type: ip
             alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
             alb.ingress.kubernetes.io/ssl-redirect: '443'
-            # EX) ACM 인증서 ARN 꼭 교체
-            alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:EX-ACCOUNT:certificate/EX-UUID
-            # EX) ExternalDNS가 A레코드 자동 생성
+            alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:061039804626:certificate/6beca310-1a10-4262-848e-119061924427
             external-dns.alpha.kubernetes.io/hostname: ops.team.matchfit.com
           hosts:
-            - host: ops.team.matchfit.com     # EX: 팀 도메인
+            - host: ops.team.matchfit.com
               paths:
                 - path: /
                   pathType: Prefix
@@ -46,7 +43,7 @@ spec:
           limits:   { cpu: 500m, memory: 256Mi }
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: kube-ops-view
   syncPolicy:
     automated:
       prune: true
