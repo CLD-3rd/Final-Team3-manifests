@@ -145,12 +145,10 @@ spec:
     spec:
       containers:
       - name: cloudwatch-exporter
-        image: prom/cloudwatch-exporter:0.15.5
-        ports:
-        - containerPort: 9106
+        image: quay.io/prometheus/cloudwatch-exporter:v0.15.5
         args:
-        - --config.file=/config/config.yml
-        - --web.listen-address=0.0.0.0:9106
+          - --config.file=/config/config.yml
+          - --web.listen-address=0.0.0.0:9106
         volumeMounts:
         - name: config
           mountPath: /config
