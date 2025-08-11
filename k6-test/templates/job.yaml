@@ -4,7 +4,7 @@ metadata:
   name: k6-load-job
   annotations:
     argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/hook-delete-policy: HookFailed
     # (선택) values.yaml에 restartStamp 키를 넣고 아래 라인 주석 해제하면 커밋만으로 재실행 보장
     # restartedAt: "{{ .Values.restartStamp | default "" }}"
 spec:

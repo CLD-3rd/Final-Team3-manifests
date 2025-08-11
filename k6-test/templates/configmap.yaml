@@ -4,4 +4,8 @@ metadata:
   name: k6-script
 data:
   script.js: |-
+{{- if eq .Values.testMode "full" }}
+{{ .Values.script_full | nindent 4 }}
+{{- else }}
 {{ .Values.script | nindent 4 }}
+{{- end }}
