@@ -105,26 +105,32 @@ data:
       aws_metric_name: Requests
       aws_dimensions: [DistributionId]
       aws_statistics: [Sum]
+      aws_region: us-east-1
     - aws_namespace: AWS/CloudFront
       aws_metric_name: BytesDownloaded
       aws_dimensions: [DistributionId]
       aws_statistics: [Sum]
+      aws_region: us-east-1
     - aws_namespace: AWS/CloudFront
       aws_metric_name: BytesUploaded
       aws_dimensions: [DistributionId]
       aws_statistics: [Sum]
+      aws_region: us-east-1
     - aws_namespace: AWS/CloudFront
       aws_metric_name: 4xxErrorRate
       aws_dimensions: [DistributionId]
       aws_statistics: [Average]
+      aws_region: us-east-1
     - aws_namespace: AWS/CloudFront
       aws_metric_name: 5xxErrorRate
       aws_dimensions: [DistributionId]
       aws_statistics: [Average]
+      aws_region: us-east-1
     - aws_namespace: AWS/CloudFront
       aws_metric_name: CacheHitRate
       aws_dimensions: [DistributionId]
       aws_statistics: [Average]
+      aws_region: us-east-1
 
 ---
 # CloudWatch Exporter Deployment
