@@ -1,6 +1,4 @@
 # CloudFront 전용 CloudWatch Exporter
-
-# CloudFront ConfigMap (us-east-1)
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,35 +6,58 @@ metadata:
   namespace: monitoring
 data:
   config.yml: |
-    region: us-east-1  # CloudFront는 반드시 us-east-1
-    period_seconds: 300
-    delay_seconds: 300
+    region: us-east-1
+    period_seconds: 60
+    delay_seconds: 120
     metrics:
-    # CloudFront Metrics
     - aws_namespace: AWS/CloudFront
       aws_metric_name: Requests
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [Region, DistributionId]
+      aws_dimension_select:
+        Region: ["Global"]
+        DistributionId: ["E1LSL9C78M0LB6"]
       aws_statistics: [Sum]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: BytesDownloaded
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [Region, DistributionId]
+      aws_dimension_select:
+        Region: ["Global"]
+        DistributionId: ["E1LSL9C78M0LB6"]
       aws_statistics: [Sum]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: BytesUploaded
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [Region, DistributionId]
+      aws_dimension_select:
+        Region: ["Global"]
+        DistributionId: ["E1LSL9C78M0LB6"]
       aws_statistics: [Sum]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: 4xxErrorRate
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [Region, DistributionId]
+      aws_dimension_select:
+        Region: ["Global"]
+        DistributionId: ["E1LSL9C78M0LB6"]
       aws_statistics: [Average]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: 5xxErrorRate
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [Region, DistributionId]
+      aws_dimension_select:
+        Region: ["Global"]
+        DistributionId: ["E1LSL9C78M0LB6"]
       aws_statistics: [Average]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: CacheHitRate
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [Region, DistributionId]
+      aws_dimension_select:
+        Region: ["Global"]
+        DistributionId: ["E1LSL9C78M0LB6"]
       aws_statistics: [Average]
+
 
 ---
 # CloudFront Exporter Deployment
