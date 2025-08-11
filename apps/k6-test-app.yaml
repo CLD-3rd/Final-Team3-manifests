@@ -22,4 +22,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true                                       # 네임스페이스 없으면 자동 생성
-      - PruneLast=true
