@@ -7,45 +7,57 @@ metadata:
 data:
   config.yml: |
     region: us-east-1
-    period_seconds: 300
-    delay_seconds: 300
+    period_seconds: 60
+    delay_seconds: 120
     metrics:
     - aws_namespace: AWS/CloudFront
       aws_metric_name: Requests
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [DistributionId, Region]
       aws_dimension_select:
         DistributionId: ["E1LSL9C78M0LB6"]
+        Region: ["Global"]
       aws_statistics: [Sum]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: BytesDownloaded
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [DistributionId, Region]
       aws_dimension_select:
         DistributionId: ["E1LSL9C78M0LB6"]
+        Region: ["Global"]
       aws_statistics: [Sum]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: BytesUploaded
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [DistributionId, Region]
       aws_dimension_select:
         DistributionId: ["E1LSL9C78M0LB6"]
+        Region: ["Global"]
       aws_statistics: [Sum]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: 4xxErrorRate
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [DistributionId, Region]
       aws_dimension_select:
         DistributionId: ["E1LSL9C78M0LB6"]
+        Region: ["Global"]
       aws_statistics: [Average]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: 5xxErrorRate
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [DistributionId, Region]
       aws_dimension_select:
         DistributionId: ["E1LSL9C78M0LB6"]
+        Region: ["Global"]
       aws_statistics: [Average]
+
     - aws_namespace: AWS/CloudFront
       aws_metric_name: CacheHitRate
-      aws_dimensions: [DistributionId]
+      aws_dimensions: [DistributionId, Region]
       aws_dimension_select:
         DistributionId: ["E1LSL9C78M0LB6"]
+        Region: ["Global"]
       aws_statistics: [Average]
+
 ---
 # CloudFront Exporter Deployment
 apiVersion: apps/v1
