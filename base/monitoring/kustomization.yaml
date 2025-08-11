@@ -9,4 +9,4 @@ resources:
   - fluentbit-service.yaml 
   - cloudwatch-exporter.yaml
   - dashboard-configmaps.yaml
-  - grafana-dashboard-backend.yaml
+  # - grafana-dashboard-backend.yaml
