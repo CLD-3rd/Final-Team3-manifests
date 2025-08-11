@@ -1,0 +1,170 @@
+---
+# Service for CloudWatch Exporter
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudwatchexporter
+  namespace: monitoring
+  labels:
+    app: cloudwatchexporter
+spec:
+  ports:
+  - port: 9106
+    targetPort: 9106
+    name: http
+  selector:
+    app: cloudwatchexporter
+
+---
+# ServiceMonitor for CloudWatch Exporter
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cloudwatchexporter-monitor
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: cloudwatchexporter
+  endpoints:
+    - port: http
+      interval: 60s
+      path: /metrics---
+# CloudWatch Exporter ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudwatchexporter-config
+  namespace: monitoring
+data:
+  config.yml: |
+    region: ap-northeast-2
+    metrics:
+    # RDS Metrics
+    - aws_namespace: AWS/RDS
+      aws_metric_name: CPUUtilization
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: DatabaseConnections
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: FreeableMemory
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: ReadLatency
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: WriteLatency
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: ReadIOPS
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: WriteIOPS
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    
+    # ElastiCache Metrics
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CPUUtilization
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: FreeableMemory
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CurrConnections
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: Evictions
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CacheHits
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CacheMisses
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Sum]
+    
+    # CloudFront Metrics
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: Requests
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: BytesDownloaded
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: BytesUploaded
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: 4xxErrorRate
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: 5xxErrorRate
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: CacheHitRate
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Average]
+
+---
+# CloudWatch Exporter Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudwatchexporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudwatchexporter
+  template:
+    metadata:
+      labels:
+        app: cloudwatchexporter
+    spec:
+      containers:
+      - name: cloudwatchexporter
+        image: prom/cloudwatchexporter:v0.15.5
+        ports:
+        - containerPort: 9106
+        args:
+        - --config.file=/config/config.yml
+        - --web.listen-address=0.0.0.0:9106
+        volumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
+        env:
+        - name: AWS_REGION
+          value: ap-northeast-2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      volumes:
+      - name: config
+        configMap:
+          name: cloudwatchexporter-config
+      serviceAccountName: cloudwatchexporter-sa 
