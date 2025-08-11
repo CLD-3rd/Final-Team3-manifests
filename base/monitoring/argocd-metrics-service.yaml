@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/name: argocd-server-metrics
 spec:
   ports:
-  - port: 8083
-    targetPort: 8083
+  - port: 8082
+    targetPort: 8082
     name: metrics
     protocol: TCP
   selector:
