@@ -1,20 +1,20 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: matchfit-backend
+  name: fluentbit-monitor
   namespace: monitoring
   labels:
-    app: matchfit
-    release: kube-prometheus-stack   # ← 이거 추가
+    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:
-      app: backend
+      app: fluentbit
   namespaceSelector:
     matchNames:
-      - argocd
+      - monitoring
   endpoints:
     - port: http
-      path: /actuator/prometheus
+      path: /api/v1/metrics/prometheus
       interval: 15s
       scrapeTimeout: 10s
+#  fluentbit가 설치된 파드의 매트릭을 수집하는 것

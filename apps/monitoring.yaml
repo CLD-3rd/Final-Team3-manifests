@@ -3,11 +3,13 @@ kind: Application
 metadata:
   name: matchfit-monitoring
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:
     repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
-    targetRevision: develop
+    targetRevision: feat/s3-irsa
     path: base/monitoring
     directory:
       recurse: true

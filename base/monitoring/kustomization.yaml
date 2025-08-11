@@ -1,3 +1,11 @@
 resources:
   - grafana-alb.yaml
   - service-monitor.yaml
+  - fluentbit-rbac.yaml
+  - fluentbit-configmap.yaml
+  - fluentbit-daemonset.yaml
+  - argocd-metrics.yaml     
+  - fluentbit-monitor.yaml  
+  - fluentbit-service.yaml 
+  - cloudwatch-exporter.yaml
+  - dashboard-configmaps.yaml
