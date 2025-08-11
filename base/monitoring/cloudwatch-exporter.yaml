@@ -3,31 +3,31 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloudwatchexporter
+  name: cloudwatch-exporter
   namespace: monitoring
   labels:
-    app: cloudwatchexporter
+    app: cloudwatch-exporter
 spec:
   ports:
   - port: 9106
     targetPort: 9106
     name: http
   selector:
-    app: cloudwatchexporter
+    app: cloudwatch-exporter
 
 ---
 # ServiceMonitor for CloudWatch Exporter
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: cloudwatchexporter-monitor
+  name: cloudwatch-exporter-monitor
   namespace: monitoring
   labels:
     release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:
-      app: cloudwatchexporter
+      app: cloudwatch-exporter
   endpoints:
     - port: http
       interval: 60s
@@ -36,7 +36,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cloudwatchexporter-config
+  name: cloudwatch-exporter-config
   namespace: monitoring
 data:
   config.yml: |
@@ -129,21 +129,21 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudwatchexporter
+  name: cloudwatch-exporter
   namespace: monitoring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cloudwatchexporter
+      app: cloudwatch-exporter
   template:
     metadata:
       labels:
-        app: cloudwatchexporter
+        app: cloudwatch-exporter
     spec:
       containers:
-      - name: cloudwatchexporter
-        image: prom/cloudwatchexporter:0.15.5
+      - name: cloudwatch-exporter
+        image: prom/cloudwatch-exporter:v0.15.5
         ports:
         - containerPort: 9106
         args:
@@ -166,5 +166,5 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: cloudwatchexporter-config
-      serviceAccountName: cloudwatchexporter-sa 
+          name: cloudwatch-exporter-config
+      serviceAccountName: cloudwatch-exporter-sa  # 테라폼에서 생성된 SA 사용
