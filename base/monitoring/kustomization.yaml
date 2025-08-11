@@ -8,3 +8,4 @@ resources:
   - argocd-metrics-service.yaml
   - fluentbit-monitor.yaml  
   - fluentbit-service.yaml 
+  - cloudwatch-exporter.yaml
