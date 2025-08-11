@@ -1,0 +1,221 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matchfit-dashboard-infrastructure
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  infrastructure.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "MatchFit Infrastructure Metrics",
+        "tags": ["matchfit", "infrastructure", "metrics"],
+        "style": "dark",
+        "timezone": "Asia/Seoul",
+        "time": { "from": "now-1h", "to": "now" },
+        "refresh": "30s",
+        "schemaVersion": 27,
+        "version": 1,
+        "panels": [
+          { "id": 1, "title": "System Overview", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }, "collapsed": false },
+          { "id": 2, "title": "EKS Cluster Nodes Status", "type": "stat",
+            "targets": [ { "expr": "count(kube_node_status_condition{condition=\"Ready\",status=\"true\"})", "legendFormat": "Ready Nodes", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "thresholds": { "steps": [ { "color": "red" }, { "color": "green", "value": 1 } ] } } },
+            "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 } },
+          { "id": 3, "title": "Total Pods Running", "type": "stat",
+            "targets": [ { "expr": "count(kube_pod_status_phase{phase=\"Running\"})", "legendFormat": "Running Pods", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "thresholds": { "steps": [ { "color": "red" }, { "color": "green", "value": 1 } ] } } },
+            "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 } },
+          { "id": 4, "title": "RDS Connections", "type": "stat",
+            "targets": [ { "expr": "aws_rds_database_connections_average", "legendFormat": "DB Connections", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" },
+              "thresholds": { "steps": [ { "color": "green" }, { "color": "yellow", "value": 50 }, { "color": "red", "value": 80 } ] } } },
+            "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 } },
+          { "id": 5, "title": "Redis Connections", "type": "stat",
+            "targets": [ { "expr": "aws_elasticache_curr_connections_average", "legendFormat": "Redis Connections", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" },
+              "thresholds": { "steps": [ { "color": "green" }, { "color": "yellow", "value": 100 }, { "color": "red", "value": 200 } ] } } },
+            "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 } },
+          { "id": 10, "title": "EKS Cluster Metrics", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 }, "collapsed": false },
+          { "id": 11, "title": "Node CPU Usage", "type": "timeseries",
+            "targets": [ { "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)", "legendFormat": "{{instance}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 0 }, "color": { "mode": "palette-classic" }, "unit": "percent", "min": 0, "max": 100 } },
+            "gridPos": { "h": 6, "w": 12, "x": 0, "y": 6 } },
+          { "id": 12, "title": "Node Memory Usage", "type": "timeseries",
+            "targets": [ { "expr": "100 * (1 - ((node_memory_MemAvailable_bytes) / (node_memory_MemTotal_bytes)))", "legendFormat": "{{instance}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line", "lineInterpolation": "linear" }, "color": { "mode": "palette-classic" }, "unit": "percent", "min": 0, "max": 100 } },
+            "gridPos": { "h": 6, "w": 12, "x": 12, "y": 6 } },
+          { "id": 13, "title": "Pod CPU Usage", "type": "timeseries",
+            "targets": [ { "expr": "rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\"}[5m]) * 100", "legendFormat": "{{namespace}}/{{pod}}/{{container}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "percent" } },
+            "gridPos": { "h": 6, "w": 24, "x": 0, "y": 12 } },
+          { "id": 20, "title": "RDS Database Metrics", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 }, "collapsed": false },
+          { "id": 21, "title": "RDS CPU Utilization", "type": "timeseries",
+            "targets": [ { "expr": "aws_rds_cpuutilization_average", "legendFormat": "{{dbinstance_identifier}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "percent", "min": 0, "max": 100,
+              "thresholds": { "steps": [ { "color": "green" }, { "color": "yellow", "value": 70 }, { "color": "red", "value": 80 } ] } } },
+            "gridPos": { "h": 6, "w": 8, "x": 0, "y": 19 } },
+          { "id": 22, "title": "RDS Free Memory", "type": "timeseries",
+            "targets": [ { "expr": "aws_rds_freeable_memory_average / 1024 / 1024", "legendFormat": "Free Memory (MB) - {{dbinstance_identifier}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "decbytes" } },
+            "gridPos": { "h": 6, "w": 8, "x": 8, "y": 19 } },
+          { "id": 23, "title": "RDS Database Connections", "type": "timeseries",
+            "targets": [ { "expr": "aws_rds_database_connections_average", "legendFormat": "{{dbinstance_identifier}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "short" } },
+            "gridPos": { "h": 6, "w": 8, "x": 16, "y": 19 } },
+          { "id": 24, "title": "RDS Read/Write IOPS", "type": "timeseries",
+            "targets": [ 
+              { "expr": "aws_rds_read_iops_average", "legendFormat": "Read IOPS - {{dbinstance_identifier}}", "refId": "A" },
+              { "expr": "aws_rds_write_iops_average", "legendFormat": "Write IOPS - {{dbinstance_identifier}}", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "iops" } },
+            "gridPos": { "h": 6, "w": 12, "x": 12, "y": 25 } },
+          { "id": 25, "title": "RDS Read/Write Latency", "type": "timeseries",
+            "targets": [ 
+              { "expr": "aws_rds_read_latency_average * 1000", "legendFormat": "Read Latency (ms) - {{dbinstance_identifier}}", "refId": "A" },
+              { "expr": "aws_rds_write_latency_average * 1000", "legendFormat": "Write Latency (ms) - {{dbinstance_identifier}}", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "ms" } },
+            "gridPos": { "h": 6, "w": 12, "x": 0, "y": 31 } },
+          { "id": 30, "title": "ElastiCache (Redis) Metrics", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 32 }, "collapsed": false },
+          { "id": 31, "title": "Redis CPU Utilization", "type": "timeseries",
+            "targets": [ { "expr": "aws_elasticache_cpuutilization_average", "legendFormat": "{{cache_cluster_id}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "percent", "min": 0, "max": 100,
+              "thresholds": { "steps": [ { "color": "green" }, { "color": "yellow", "value": 70 }, { "color": "red", "value": 80 } ] } } },
+            "gridPos": { "h": 6, "w": 8, "x": 0, "y": 33 } },
+          { "id": 32, "title": "Redis Memory Usage", "type": "timeseries",
+            "targets": [ { "expr": "aws_elasticache_freeable_memory_average / 1024 / 1024", "legendFormat": "Free Memory (MB) - {{cache_cluster_id}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "decbytes" } },
+            "gridPos": { "h": 6, "w": 8, "x": 8, "y": 33 } },
+          { "id": 33, "title": "Redis Cache Performance", "type": "timeseries",
+            "targets": [ 
+              { "expr": "rate(aws_elasticache_cache_hits_sum[5m])", "legendFormat": "Cache Hits/sec - {{cache_cluster_id}}", "refId": "A" },
+              { "expr": "rate(aws_elasticache_cache_misses_sum[5m])", "legendFormat": "Cache Misses/sec - {{cache_cluster_id}}", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "short" } },
+            "gridPos": { "h": 6, "w": 8, "x": 16, "y": 33 } },
+          { "id": 34, "title": "Redis Evictions & Connections", "type": "timeseries",
+            "targets": [ 
+              { "expr": "aws_elasticache_evictions_sum", "legendFormat": "Evictions - {{cache_cluster_id}}", "refId": "A" },
+              { "expr": "aws_elasticache_curr_connections_average", "legendFormat": "Current Connections - {{cache_cluster_id}}", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "short" } },
+            "gridPos": { "h": 6, "w": 8, "x": 0, "y": 39 } },
+          { "id": 40, "title": "CloudFront CDN Metrics", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 45 }, "collapsed": false },
+          { "id": 41, "title": "CloudFront Requests", "type": "timeseries",
+            "targets": [ { "expr": "rate(aws_cloudfront_requests_sum[5m])", "legendFormat": "Requests/sec - {{distribution_id}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "reqps" } },
+            "gridPos": { "h": 6, "w": 8, "x": 0, "y": 46 } },
+          { "id": 42, "title": "CloudFront Error Rates", "type": "timeseries",
+            "targets": [ 
+              { "expr": "aws_cloudfront_4xxerror_rate_average", "legendFormat": "4xx Error Rate - {{distribution_id}}", "refId": "A" },
+              { "expr": "aws_cloudfront_5xxerror_rate_average", "legendFormat": "5xx Error Rate - {{distribution_id}}", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "percent",
+              "thresholds": { "steps": [ { "color": "green" }, { "color": "yellow", "value": 3 }, { "color": "red", "value": 5 } ] } } },
+            "gridPos": { "h": 6, "w": 8, "x": 8, "y": 46 } },
+          { "id": 43, "title": "CloudFront Cache Hit Rate", "type": "timeseries",
+            "targets": [ { "expr": "aws_cloudfront_cache_hit_rate_average", "legendFormat": "Cache Hit Rate - {{distribution_id}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "percent", "min": 0, "max": 100 } },
+            "gridPos": { "h": 6, "w": 8, "x": 16, "y": 46 } },
+          { "id": 44, "title": "CloudFront Data Transfer", "type": "timeseries",
+            "targets": [ 
+              { "expr": "rate(aws_cloudfront_bytes_downloaded_sum[5m]) / 1024 / 1024", "legendFormat": "Downloaded MB/s - {{distribution_id}}", "refId": "A" },
+              { "expr": "rate(aws_cloudfront_bytes_uploaded_sum[5m]) / 1024 / 1024", "legendFormat": "Uploaded MB/s - {{distribution_id}}", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "MBs" } },
+            "gridPos": { "h": 6, "w": 8, "x": 8, "y": 52 } },
+          { "id": 50, "title": "ArgoCD Metrics", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 58 }, "collapsed": false },
+          { "id": 51, "title": "ArgoCD Applications Status", "type": "stat",
+            "targets": [ 
+              { "expr": "count(argocd_app_health_status{health_status=\"Healthy\"})", "legendFormat": "Healthy Apps", "refId": "A" },
+              { "expr": "count(argocd_app_health_status{health_status=\"Degraded\"})", "legendFormat": "Degraded Apps", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "thresholds": { "steps": [ { "color": "green" }, { "color": "red", "value": 1 } ] } } },
+            "gridPos": { "h": 4, "w": 12, "x": 0, "y": 59 } },
+          { "id": 52, "title": "ArgoCD Sync Operations", "type": "timeseries",
+            "targets": [ { "expr": "rate(argocd_app_sync_total[5m])", "legendFormat": "Syncs/min", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "short" } },
+            "gridPos": { "h": 4, "w": 12, "x": 12, "y": 59 } },
+          { "id": 60, "title": "FluentBit Metrics", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 63 }, "collapsed": false },
+          { "id": 61, "title": "FluentBit Processing Rate", "type": "timeseries",
+            "targets": [ 
+              { "expr": "rate(fluentbit_input_records_total[5m])", "legendFormat": "Input Records/sec - {{name}}", "refId": "A" },
+              { "expr": "rate(fluentbit_output_records_total[5m])", "legendFormat": "Output Records/sec - {{name}}", "refId": "B" } 
+            ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "short" } },
+            "gridPos": { "h": 6, "w": 12, "x": 0, "y": 64 } },
+          { "id": 62, "title": "FluentBit Errors", "type": "timeseries",
+            "targets": [ { "expr": "rate(fluentbit_output_errors_total[5m])", "legendFormat": "Errors/sec - {{name}}", "refId": "A" } ],
+            "fieldConfig": { "defaults": { "custom": { "drawStyle": "line" }, "color": { "mode": "palette-classic" }, "unit": "short",
+              "thresholds": { "steps": [ { "color": "green" }, { "color": "red", "value": 0.1 } ] } } },
+            "gridPos": { "h": 6, "w": 12, "x": 12, "y": 64 } }
+        ]
+      }
+    }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matchfit-dashboard-logs
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  logs.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "MatchFit Application Logs",
+        "tags": ["matchfit", "logs", "debugging"],
+        "style": "dark",
+        "timezone": "Asia/Seoul",
+        "time": { "from": "now-1h", "to": "now" },
+        "refresh": "30s",
+        "schemaVersion": 27,
+        "version": 1,
+        "panels": [
+          { "id": 1, "title": "Log Overview", "type": "row", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }, "collapsed": false },
+          { "id": 11, "title": "All Application Logs", "type": "logs",
+            "targets": [
+              {
+                "datasource": "CloudWatch Logs",
+                "refId": "A",
+                "region": "ap-northeast-2",
+                "logGroups": [
+                  {
+                    "name": "/matchfit-fluentbit/logs",
+                    "arn": "arn:aws:logs:ap-northeast-2:061039804626:log-group:/matchfit-fluentbit/logs"
+                  }
+                ],
+                "queryType": "logs",
+                "expression": "fields @timestamp, log, kubernetes.namespace_name, kubernetes.pod_name, kubernetes.container_name | filter kubernetes.namespace_name like /backend|frontend|argocd/ | sort @timestamp desc | limit 100"
+              }
+            ],
+            "gridPos": { "h": 10, "w": 24, "x": 0, "y": 1 },
+            "options": { "showTime": true, "wrapLogMessage": true, "enableLogDetails": true, "sortOrder": "Descending" } },
+          { "id": 21, "title": "Error Logs Only", "type": "logs",
+            "targets": [
+              {
+                "datasource": "CloudWatch Logs",
+                "refId": "A",
+                "region": "ap-northeast-2",
+                "logGroups": [
+                  {
+                    "name": "/matchfit-fluentbit/logs",
+                    "arn": "arn:aws:logs:ap-northeast-2:061039804626:log-group:/matchfit-fluentbit/logs"
+                  }
+                ],
+                "queryType": "logs",
+                "expression": "fields @timestamp, log, kubernetes.namespace_name, kubernetes.pod_name | filter log like /ERROR|error|Error|FATAL|fatal|Fatal|Exception|exception/ | sort @timestamp desc | limit 50"
+              }
+            ],
+            "gridPos": { "h": 8, "w": 24, "x": 0, "y": 11 },
+            "options": { "showTime": true, "wrapLogMessage": true, "enableLogDetails": true, "sortOrder": "Descending" } }
+        ]
+      }
+    }
