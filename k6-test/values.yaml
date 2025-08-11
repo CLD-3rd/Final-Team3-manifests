@@ -45,9 +45,9 @@ script_full: |-
 
   export const options = {
     stages: [
-      { duration: '3m',  target: 10 },   // 예열
-      { duration: '10m',  target: 50 },   // 부하 증가
-      { duration: '2m',  target: 0 },    // 종료
+      { duration: '6m',  target: 50 },   // 예열
+      { duration: '20m',  target: 300 },   // 부하 증가
+      { duration: '4m',  target: 0 },    // 종료
     ],
     thresholds: {
       http_req_duration: ['p(95)<1000'],  // 95% 요청이 1초 이내
@@ -110,5 +110,5 @@ script_full: |-
       'status is 200': (r) => r.status === 200
     });
 
-    sleep(1);
+    sleep(0.1);
   }

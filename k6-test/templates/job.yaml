@@ -20,11 +20,11 @@ spec:
         # 예시값, 필요시 조정
         resources:
           requests:
-            cpu: 200m
-            memory: 256Mi
-          limits:
             cpu: "1"
             memory: 512Mi
+          limits:
+            cpu: "4"
+            memory: 1Gi
       volumes:
         - name: script
           configMap:
