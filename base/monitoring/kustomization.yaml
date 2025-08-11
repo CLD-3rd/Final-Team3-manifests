@@ -4,7 +4,7 @@ resources:
   - fluentbit-rbac.yaml
   - fluentbit-configmap.yaml
   - fluentbit-daemonset.yaml
-  - argocd-monitor.yaml     
+  - argocd-metrics.yaml     
   - fluentbit-monitor.yaml  
   - fluentbit-service.yaml 
   - cloudwatch-exporter.yaml
