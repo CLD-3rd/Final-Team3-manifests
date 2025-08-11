@@ -3,12 +3,15 @@ grafana:
     create: false
     name: grafana-sa
 
-  # 기본 프로비저닝 활성화
   sidecar:
     dashboards:
-      enabled: false
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+      folder: /tmp/dashboards
     datasources:
-      enabled: false
+      enabled: true
 
   datasources:
     datasources.yaml:
@@ -19,21 +22,20 @@ grafana:
           access: proxy
           url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
           isDefault: true
+        - name: CloudWatch Logs
+          type: cloudwatch
+          access: proxy
+          jsonData:
+            region: ap-northeast-2
+            authType: default
+            defaultRegion: ap-northeast-2
+            logGroups:
+              - name: "/matchfit-fluentbit/logs"
+                arn: "arn:aws:logs:ap-northeast-2:061039804626:log-group:/matchfit-fluentbit/logs"
 
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-        - name: 'default'
-          orgId: 1
-          folder: ''
-          type: file
-          disableDeletion: false
-          updateIntervalSeconds: 10
-          allowUiUpdates: true
-          options:
-            path: /var/lib/grafana/dashboards
+  dashboardProviders: {}
 
+  # 대시보드 ConfigMap 
   dashboards:
     matchfit-dashboards:
       matchfit-infrastructure-metrics:
