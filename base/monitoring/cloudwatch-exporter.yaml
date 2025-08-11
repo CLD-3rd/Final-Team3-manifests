@@ -167,4 +167,4 @@ spec:
       - name: config
         configMap:
           name: cloudwatch-exporter-config
-      serviceAccountName: cloudwatch-exporter-sa  # 테라폼에서 생성된 SA 사용
+      serviceAccountName: cloudwatchexporter-sa 
