@@ -143,7 +143,7 @@ spec:
     spec:
       containers:
       - name: cloudwatchexporter
-        image: prom/cloudwatchexporter:v0.15.5
+        image: prom/cloudwatchexporter:0.15.5
         ports:
         - containerPort: 9106
         args:
