@@ -19,7 +19,7 @@ script: |-
     ext: {
       output: {
         'prometheus-remote': {
-          address: 'http://prometheus.monitoring:9090/api/v1/write'
+          address: 'http://kube-prometheus-stack-prometheus.monitoring.svc:9090/api/v1/write'
           # EX) Prometheus 주소/포트는 클러스터 상황에 맞게 확인 후 수정
           #     kubectl -n monitoring get svc | findstr prometheus
         }
@@ -27,10 +27,10 @@ script: |-
     }
   };
 
-  const BASE_URL = 'https://EX.api.your-domain.com';  // EX) 실제 대상 API 도메인/URL
+  const BASE_URL = 'https://backend.match-fit.store';
   const ENDPOINTS = [
-    '/EX-login',   // EX) /api/user/login
-    '/EX-list',    // EX) /api/posts/list
+    '/api/user/login',
+    '/api/posts/1'
   ];
 
   export default function () {

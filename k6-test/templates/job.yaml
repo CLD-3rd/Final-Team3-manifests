@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: k6
-        image: grafana/k6:0.48.0
+        image: grafana/k6:0.57.0
         command: ["k6", "run", "/scripts/script.js"]
         volumeMounts:
           - name: script
