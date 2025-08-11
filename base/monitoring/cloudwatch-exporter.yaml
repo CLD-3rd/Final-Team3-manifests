@@ -3,40 +3,42 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloudwatch-exporter
+  name: cloudwatchexporter-svc
   namespace: monitoring
   labels:
-    app: cloudwatch-exporter
+    app: cloudwatchexporter
 spec:
   ports:
   - port: 9106
     targetPort: 9106
     name: http
   selector:
-    app: cloudwatch-exporter
+    app: cloudwatchexporter
 
 ---
 # ServiceMonitor for CloudWatch Exporter
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: cloudwatch-exporter-monitor
+  name: cloudwatchexporter-monitor
   namespace: monitoring
   labels:
     release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:
-      app: cloudwatch-exporter
+      app: cloudwatchexporter
   endpoints:
     - port: http
       interval: 60s
-      path: /metrics---
+      path: /metrics
+
+---
 # CloudWatch Exporter ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cloudwatch-exporter-config
+  name: cloudwatchexporter-config
   namespace: monitoring
 data:
   config.yml: |
@@ -129,21 +131,21 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudwatch-exporter
+  name: cloudwatchexporter
   namespace: monitoring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cloudwatch-exporter
+      app: cloudwatchexporter
   template:
     metadata:
       labels:
-        app: cloudwatch-exporter
+        app: cloudwatchexporter
     spec:
       containers:
       - name: cloudwatch-exporter
-        image: prom/cloudwatch-exporter:v0.15.5
+        image: prom/cloudwatch-exporter:0.15.5
         ports:
         - containerPort: 9106
         args:
@@ -166,5 +168,5 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: cloudwatch-exporter-config
-      serviceAccountName: cloudwatchexporter-sa 
+          name: cloudwatchexporter-config
+      serviceAccountName: cloudwatchexporter-sa
