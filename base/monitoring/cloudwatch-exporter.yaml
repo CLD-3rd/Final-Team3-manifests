@@ -28,9 +28,6 @@ spec:
   selector:
     matchLabels:
       app: cloudwatchexporter
-  namespaceSelector:
-    matchNames:
-      - monitoring
   endpoints:
     - port: http
       interval: 60s
