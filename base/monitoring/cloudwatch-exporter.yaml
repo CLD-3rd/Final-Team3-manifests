@@ -1,5 +1,5 @@
 ---
-# Service (port 이름= http)
+# Service for CloudWatch Exporter
 apiVersion: v1
 kind: Service
 metadata:
@@ -9,14 +9,14 @@ metadata:
     app: cloudwatchexporter
 spec:
   ports:
-    - port: 9106
-      targetPort: 9106
-      name: http
+  - port: 9106
+    targetPort: 9106
+    name: http
   selector:
     app: cloudwatchexporter
 
 ---
-# ServiceMonitor (Prometheus가 위 Service를 긁음)
+# ServiceMonitor for CloudWatch Exporter
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -34,7 +34,7 @@ spec:
       path: /metrics
 
 ---
-# ConfigMap (cloudwatch-exporter 설정)
+# CloudWatch Exporter ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -42,164 +42,92 @@ metadata:
   namespace: monitoring
 data:
   config.yml: |
-    # 빠른 확인용(원복 가능)
-    period_seconds: 60
-    delay_seconds: 300
-
-    # 기본 리전 (RDS/ElastiCache)
     region: ap-northeast-2
-
     metrics:
-      # --- RDS: matchfit-rds ---
-      - aws_namespace: AWS/RDS
-        aws_metric_name: CPUUtilization
-        aws_dimensions: [DBInstanceIdentifier]
-        aws_dimension_select:
-          DBInstanceIdentifier: ["matchfit-rds"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/RDS
-        aws_metric_name: DatabaseConnections
-        aws_dimensions: [DBInstanceIdentifier]
-        aws_dimension_select:
-          DBInstanceIdentifier: ["matchfit-rds"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/RDS
-        aws_metric_name: FreeableMemory
-        aws_dimensions: [DBInstanceIdentifier]
-        aws_dimension_select:
-          DBInstanceIdentifier: ["matchfit-rds"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/RDS
-        aws_metric_name: ReadLatency
-        aws_dimensions: [DBInstanceIdentifier]
-        aws_dimension_select:
-          DBInstanceIdentifier: ["matchfit-rds"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/RDS
-        aws_metric_name: WriteLatency
-        aws_dimensions: [DBInstanceIdentifier]
-        aws_dimension_select:
-          DBInstanceIdentifier: ["matchfit-rds"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/RDS
-        aws_metric_name: ReadIOPS
-        aws_dimensions: [DBInstanceIdentifier]
-        aws_dimension_select:
-          DBInstanceIdentifier: ["matchfit-rds"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/RDS
-        aws_metric_name: WriteIOPS
-        aws_dimensions: [DBInstanceIdentifier]
-        aws_dimension_select:
-          DBInstanceIdentifier: ["matchfit-rds"]
-        aws_statistics: [Average]
-
-      # --- ElastiCache Redis: matchfit-redis-rg (노드별 매칭) ---
-      - aws_namespace: AWS/ElastiCache
-        aws_metric_name: CPUUtilization
-        aws_dimensions: [CacheClusterId]
-        aws_dimension_select_regex:
-          CacheClusterId: ["matchfit-redis-rg.*"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/ElastiCache
-        aws_metric_name: FreeableMemory
-        aws_dimensions: [CacheClusterId]
-        aws_dimension_select_regex:
-          CacheClusterId: ["matchfit-redis-rg.*"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/ElastiCache
-        aws_metric_name: CurrConnections
-        aws_dimensions: [CacheClusterId]
-        aws_dimension_select_regex:
-          CacheClusterId: ["matchfit-redis-rg.*"]
-        aws_statistics: [Average]
-
-      - aws_namespace: AWS/ElastiCache
-        aws_metric_name: Evictions
-        aws_dimensions: [CacheClusterId]
-        aws_dimension_select_regex:
-          CacheClusterId: ["matchfit-redis-rg.*"]
-        aws_statistics: [Sum]
-
-      - aws_namespace: AWS/ElastiCache
-        aws_metric_name: CacheHits
-        aws_dimensions: [CacheClusterId]
-        aws_dimension_select_regex:
-          CacheClusterId: ["matchfit-redis-rg.*"]
-        aws_statistics: [Sum]
-
-      - aws_namespace: AWS/ElastiCache
-        aws_metric_name: CacheMisses
-        aws_dimensions: [CacheClusterId]
-        aws_dimension_select_regex:
-          CacheClusterId: ["matchfit-redis-rg.*"]
-        aws_statistics: [Sum]
-
-      # --- CloudFront ---
-      - aws_namespace: AWS/CloudFront
-        aws_metric_name: Requests
-        aws_dimensions: [DistributionId, Region]
-        aws_dimension_select:
-          DistributionId: ["E1LSL9C78M0LB6"]
-          Region: ["Global"]
-        aws_statistics: [Sum]
-        region: us-east-1
-
-      - aws_namespace: AWS/CloudFront
-        aws_metric_name: BytesDownloaded
-        aws_dimensions: [DistributionId, Region]
-        aws_dimension_select:
-          DistributionId: ["E1LSL9C78M0LB6"]
-          Region: ["Global"]
-        aws_statistics: [Sum]
-        region: us-east-1
-
-      - aws_namespace: AWS/CloudFront
-        aws_metric_name: BytesUploaded
-        aws_dimensions: [DistributionId, Region]
-        aws_dimension_select:
-          DistributionId: ["E1LSL9C78M0LB6"]
-          Region: ["Global"]
-        aws_statistics: [Sum]
-        region: us-east-1
-
-      - aws_namespace: AWS/CloudFront
-        aws_metric_name: 4xxErrorRate
-        aws_dimensions: [DistributionId, Region]
-        aws_dimension_select:
-          DistributionId: ["E1LSL9C78M0LB6"]
-          Region: ["Global"]
-        aws_statistics: [Average]
-        region: us-east-1
-
-      - aws_namespace: AWS/CloudFront
-        aws_metric_name: 5xxErrorRate
-        aws_dimensions: [DistributionId, Region]
-        aws_dimension_select:
-          DistributionId: ["E1LSL9C78M0LB6"]
-          Region: ["Global"]
-        aws_statistics: [Average]
-        region: us-east-1
-
-      - aws_namespace: AWS/CloudFront
-        aws_metric_name: CacheHitRate
-        aws_dimensions: [DistributionId, Region]
-        aws_dimension_select:
-          DistributionId: ["E1LSL9C78M0LB6"]
-          Region: ["Global"]
-        aws_statistics: [Average]
-        region: us-east-1
+    # RDS Metrics
+    - aws_namespace: AWS/RDS
+      aws_metric_name: CPUUtilization
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: DatabaseConnections
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: FreeableMemory
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: ReadLatency
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: WriteLatency
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: ReadIOPS
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: WriteIOPS
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average]
+    
+    # ElastiCache Metrics
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CPUUtilization
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: FreeableMemory
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CurrConnections
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: Evictions
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CacheHits
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CacheMisses
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Sum]
+    
+    # CloudFront Metrics
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: Requests
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: BytesDownloaded
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: BytesUploaded
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: 4xxErrorRate
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: 5xxErrorRate
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Average]
+    - aws_namespace: AWS/CloudFront
+      aws_metric_name: CacheHitRate
+      aws_dimensions: [DistributionId]
+      aws_statistics: [Average]
 
 ---
-# Deployment 
+# CloudWatch Exporter Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -215,30 +143,27 @@ spec:
       labels:
         app: cloudwatchexporter
     spec:
-      serviceAccountName: cloudwatchexporter-sa
       containers:
-        - name: cloudwatchexporter
-          image: quay.io/prometheus/cloudwatch-exporter:v0.15.5
-          args:
-            - --config.file=/config/config.yml
-            - --web.listen-address=0.0.0.0:9106
-          ports:
-            - containerPort: 9106
-          volumeMounts:
-            - name: config
-              mountPath: /config
-              readOnly: true
-          env:
-            - name: AWS_REGION
-              value: ap-northeast-2
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 200m
-              memory: 256Mi
-      volumes:
+      - name: cloudwatch-exporter
+        image: quay.io/prometheus/cloudwatch-exporter:v0.15.5
+        args:
+          - /config/config.yml
+        volumeMounts:
         - name: config
-          configMap:
-            name: cloudwatchexporter-config
+          mountPath: /config
+          readOnly: true
+        env:
+        - name: AWS_REGION
+          value: ap-northeast-2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      volumes:
+      - name: config
+        configMap:
+          name: cloudwatchexporter-config
+      serviceAccountName: cloudwatchexporter-sa
