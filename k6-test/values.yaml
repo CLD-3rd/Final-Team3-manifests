@@ -1,5 +1,5 @@
 # 현재 테스트 모드
-testMode: smoke  # smoke | full
+testMode: full  # smoke | full
 
 script: |-
   import http from 'k6/http';
