@@ -4,4 +4,4 @@ metadata:
   name: k6-script
 data:
   script.js: |-
-{{ .Values.script | nindent 4 }}
+{{ .Values.script | indent 2 }}
