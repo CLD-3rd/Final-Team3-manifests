@@ -1,5 +1,5 @@
 # 현재 테스트 모드
-testMode: full  # smoke | full
+testMode: smoke  # smoke | full
 
 script: |-
   import http from 'k6/http';
@@ -110,5 +110,5 @@ script_full: |-
       'status is 200': (r) => r.status === 200
     });
 
-    sleep(0.1);
+    sleep(0.5);
   }
