@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-ops-view
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  project: default
+  source:
+    repoURL: https://codecentric.github.io/helm-charts
+    chart: kube-ops-view
+    targetRevision: 5.0.4
+    helm:
+      values: |
+        service:
+          type: ClusterIP
+
+        # Ingress(ALB) 활성화 + HTTPS + ExternalDNS
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/scheme: internet-facing
+            alb.ingress.kubernetes.io/target-type: ip
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: '443'
+            alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:061039804626:certificate/6beca310-1a10-4262-848e-119061924427
+            external-dns.alpha.kubernetes.io/hostname: ops.team.matchfit.com
+          hosts:
+            - host: ops.team.matchfit.com
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - ops.team.matchfit.com
+              secretName: kube-ops-view-cert   # cert-manager 쓰면 사용, ACM 직연동이면 무시돼도 OK
+
+        # 권장 리소스(과도한 스케줄 실패 방지)
+        resources:
+          requests: { cpu: 100m, memory: 128Mi }
+          limits:   { cpu: 500m, memory: 256Mi }
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-ops-view
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

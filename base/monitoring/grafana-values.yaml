@@ -1,4 +1,4 @@
 grafana:
   serviceAccount:
-    create: false       # 이미 존재하는 SA 사용
+    create: false
     name: grafana-sa

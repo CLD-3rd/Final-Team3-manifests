@@ -1,0 +1,114 @@
+# 현재 테스트 모드
+testMode: full  # smoke | full
+
+script: |-
+  import http from 'k6/http';
+  import { check, sleep } from 'k6';
+
+  export const options = {
+    stages: [
+      { duration: '30s', target: 5 },    // 예열
+      { duration: '1m',  target: 20 },   // 부하 증가
+      { duration: '30s', target: 0 },    // 종료
+    ],
+    thresholds: {
+      http_req_duration: ['p(95)<1000'],  // 95% 요청이 1초 이내
+      http_req_failed:   ['rate<0.05'],   // 실패율 < 5%
+    },
+    ext: {
+      output: {
+        'prometheus-remote': {
+          address: 'http://kube-prometheus-stack-prometheus.monitoring.svc:9090/api/v1/write',
+        }
+      }
+    }
+  };
+
+  const BASE_URL = 'https://backend.match-fit.store';
+  const ENDPOINTS = [
+    '/api/user/login',
+    '/api/posts/1'
+  ];
+
+  export default function () {
+    for (const path of ENDPOINTS) {
+      const res = http.get(`${BASE_URL}${path}`);
+      check(res, { [`GET ${path} status 200`]: (r) => r.status === 200 });
+      sleep(1);
+    }
+  }
+
+
+script_full: |-
+  import http from 'k6/http';
+  import { check, sleep } from 'k6';
+
+  export const options = {
+    stages: [
+      { duration: '6m',  target: 50 },   // 예열
+      { duration: '20m',  target: 300 },   // 부하 증가
+      { duration: '4m',  target: 0 },    // 종료
+    ],
+    thresholds: {
+      http_req_duration: ['p(95)<1000'],  // 95% 요청이 1초 이내
+      http_req_failed:   ['rate<0.05'],   // 실패율 < 5%
+    },
+    ext: {
+      output: {
+        'prometheus-remote': {
+          address: 'http://kube-prometheus-stack-prometheus.monitoring.svc:9090/api/v1/write',
+        }
+      }
+    }
+  };
+
+  const BASE_URL = 'https://backend.match-fit.store';
+
+  const SPORTS = [
+    'FOOTBALL',
+    'BASKETBALL',
+    'BADMINTON',
+    'TABLE_TENNIS',
+    'VOLLEYBALL',
+    'TENNIS'
+  ];
+
+  const GENDERS = [
+    'MALE',
+    'FEMALE',
+    'ALL'
+  ];
+
+  const SORT_TYPES = [
+    'DATE',
+    'POPULAR'
+  ];
+
+  // 날짜 범위 2025-08-01 ~ 2025-08-10
+  function getRandomDate() {
+    const start = new Date('2025-08-01');
+    const end = new Date('2025-08-10');
+    const randomTime = start.getTime() + Math.random() * (end.getTime() - start.getTime());
+    const dateObj = new Date(randomTime);
+    const yyyy = dateObj.getFullYear();
+    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const dd = String(dateObj.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  export default function () {
+    const sport = SPORTS[Math.floor(Math.random() * SPORTS.length)];
+    const gender = GENDERS[Math.floor(Math.random() * GENDERS.length)];
+    const sortType = SORT_TYPES[Math.floor(Math.random() * SORT_TYPES.length)];
+    const date = getRandomDate();
+
+    const url = `${BASE_URL}/api/posts/list?sports=${sport}&gender=${gender}&sortType=${sortType}&date=${date}`;
+
+    const res = http.get(url);
+
+    check(res, {
+      'status is 200': (r) => r.status === 200
+    });
+
+    sleep(0.1);
+  }

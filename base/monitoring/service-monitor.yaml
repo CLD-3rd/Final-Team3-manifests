@@ -5,6 +5,7 @@ metadata:
   namespace: monitoring
   labels:
     app: matchfit
+    release: kube-prometheus-stack   # ← 이거 추가
 spec:
   selector:
     matchLabels:
