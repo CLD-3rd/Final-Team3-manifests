@@ -6,7 +6,7 @@ metadata:
   labels:
     grafana_dashboard: "1"   # 반드시 values.yaml의 sidecar.label과 일치 (문자열 권장)
 data:
-  myapp-dashboard.json: |-
+  backend-dashboard.json: |-
     {
   "annotations": {
     "list": [
