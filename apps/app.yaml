@@ -23,7 +23,7 @@ spec:
   ignoreDifferences:
     - group: apps
       kind: Deployment
-      name: backend
+      name: argocd-backend
       namespace: argocd
       jsonPointers:
         - /spec/replicas
