@@ -2,7 +2,6 @@ resources:
   - deployment.yaml
   - service.yaml
   - backend-ingress.yaml
-  - serviceaccount.yaml
 
 images:
   - name: 061039804626.dkr.ecr.ap-northeast-2.amazonaws.com/matchfit-ecr
