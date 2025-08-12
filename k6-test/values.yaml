@@ -86,8 +86,8 @@ script_full: |-
 
   // 날짜 범위 2025-08-01 ~ 2025-08-10
   function getRandomDate() {
-    const start = new Date('2025-08-01');
-    const end = new Date('2025-08-10');
+    const start = new Date('2025-08-23');
+    const end = new Date('2025-08-30');
     const randomTime = start.getTime() + Math.random() * (end.getTime() - start.getTime());
     const dateObj = new Date(randomTime);
     const yyyy = dateObj.getFullYear();
