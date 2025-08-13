@@ -2,3 +2,24 @@ grafana:
   serviceAccount:
     create: false
     name: grafana-sa
+
+  # Grafana provisioning / dashboard sidecar (kube-prometheus-stack 지원)
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard     # ConfigMap에 붙일 레이블 키 (아래 ConfigMap과 일치시킬 것)
+      folder: /var/lib/grafana/dashboards/default
+      searchNamespace: ALL        # ConfigMaps가 다른 namespace에 있으면 변경 고려
+      # optional:
+      # refreshInterval: 10s
+
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          options:
+            path: /var/lib/grafana/dashboards/default
