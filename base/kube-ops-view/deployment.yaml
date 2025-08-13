@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-ops-view
+  labels:
+    app: kube-ops-view
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-ops-view
+  template:
+    metadata:
+      labels:
+        app: kube-ops-view
+    spec:
+      containers:
+        - name: kube-ops-view
+          image: kubeopsview/kube-ops-view:v20.4.0
+          ports:
+            - containerPort: 8080
+          args:
+            - --namespace= # 전체 네임스페이스 조회용(빈값)
