@@ -14,6 +14,7 @@ spec:
       labels:
         app: kube-ops-view
     spec:
+      serviceAccountName: kube-ops-view
       containers:
         - name: kube-ops-view
           image: hjacobs/kube-ops-view:latest
