@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: kube-ops-view
-          image: kubeopsview/kube-ops-view:v20.4.0
+          image: kubeopsview/kube-ops-view:v0.12.0
           ports:
             - containerPort: 8080
           args:
