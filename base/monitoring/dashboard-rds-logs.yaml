@@ -1,0 +1,239 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rds-logs-grafana-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  rds-logs-dashboard.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 35,
+      "links": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "eeuqc1a8tgirka"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "dedupStrategy": "none",
+            "enableInfiniteScrolling": false,
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "pluginVersion": "12.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "cloudwatch",
+                "uid": "eeuqc1a8tgirka"
+              },
+              "dimensions": {},
+              "expression": "fields @timestamp, @message |\r\nsort @timestamp desc |\r\nlimit 50",
+              "id": "",
+              "label": "",
+              "logGroups": [
+                {
+                  "accountId": "061039804626",
+                  "arn": "arn:aws:logs:ap-northeast-2:061039804626:log-group:/aws/rds/instance/matchfit-rds/error:*",
+                  "name": "/aws/rds/instance/matchfit-rds/error"
+                }
+              ],
+              "matchExact": true,
+              "metricEditorMode": 1,
+              "metricName": "",
+              "metricQueryType": 0,
+              "namespace": "",
+              "period": "",
+              "queryLanguage": "CWLI",
+              "queryMode": "Logs",
+              "refId": "A",
+              "region": "default",
+              "sqlExpression": "",
+              "statistic": "Average",
+              "statsGroups": []
+            }
+          ],
+          "title": "Error",
+          "type": "logs"
+        },
+        {
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "eeuqc1a8tgirka"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 11
+          },
+          "id": 2,
+          "options": {
+            "dedupStrategy": "none",
+            "enableInfiniteScrolling": false,
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "pluginVersion": "12.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "cloudwatch",
+                "uid": "eeuqc1a8tgirka"
+              },
+              "dimensions": {},
+              "expression": "fields @timestamp, @message\r\n| sort @timestamp desc\r\n| limit 50",
+              "id": "",
+              "label": "",
+              "logGroups": [
+                {
+                  "accountId": "061039804626",
+                  "arn": "arn:aws:logs:ap-northeast-2:061039804626:log-group:/aws/rds/instance/matchfit-rds/slowquery:*",
+                  "name": "/aws/rds/instance/matchfit-rds/slowquery"
+                }
+              ],
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "",
+              "metricQueryType": 0,
+              "namespace": "",
+              "period": "",
+              "queryLanguage": "CWLI",
+              "queryMode": "Logs",
+              "refId": "A",
+              "region": "default",
+              "sqlExpression": "",
+              "statistic": "Average",
+              "statsGroups": []
+            }
+          ],
+          "title": "Slow Query",
+          "type": "logs"
+        },
+        {
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "eeuqc1a8tgirka"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "id": 3,
+          "options": {
+            "dedupStrategy": "none",
+            "enableInfiniteScrolling": false,
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "pluginVersion": "12.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "cloudwatch",
+                "uid": "eeuqc1a8tgirka"
+              },
+              "dimensions": {},
+              "expression": "fields @timestamp, @message\r\n| sort @timestamp desc\r\n| limit 50",
+              "id": "",
+              "label": "",
+              "logGroups": [
+                {
+                  "accountId": "061039804626",
+                  "arn": "arn:aws:logs:ap-northeast-2:061039804626:log-group:/aws/rds/instance/matchfit-rds/general:*",
+                  "name": "/aws/rds/instance/matchfit-rds/general"
+                }
+              ],
+              "matchExact": true,
+              "metricEditorMode": 0,
+              "metricName": "",
+              "metricQueryType": 0,
+              "namespace": "",
+              "period": "",
+              "queryLanguage": "CWLI",
+              "queryMode": "Logs",
+              "refId": "A",
+              "region": "default",
+              "sqlExpression": "",
+              "statistic": "Average",
+              "statsGroups": []
+            }
+          ],
+          "title": "General",
+          "type": "logs"
+        }
+      ],
+      "preload": false,
+      "schemaVersion": 41,
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "AWS RDS Log",
+      "uid": "1de1ad63-3e62-4a0e-a216-a7594a257477",
+      "version": 11
+    }
