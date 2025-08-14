@@ -109,7 +109,7 @@ metadata:
   name: cloudwatchexporter
   namespace: monitoring
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: cloudwatchexporter

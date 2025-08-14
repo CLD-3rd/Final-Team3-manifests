@@ -8,7 +8,7 @@ spec:
     apiVersion: apps/v1            # 타겟 리소스의 API 버전
     kind: Deployment               # 리소스 종류
     name: argocd-backend           # 타겟 Deployment 이름
-  minReplicas: 2                   # 최소 Pod 개수
+  minReplicas: 4                   # 최소 Pod 개수
   maxReplicas: 10                  # 최대 Pod 개수
   metrics:                         # 스케일 기준 메트릭 정의
     - type: Resource               # 리소스 기반 메트릭
