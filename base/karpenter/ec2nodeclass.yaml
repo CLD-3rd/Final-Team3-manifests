@@ -1,0 +1,68 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  kubelet:  # 각 노드에 직접 설치되고 실행되는 데몬
+    podsPerCore: 10                  # 코어당 허용 가능한 파드 수
+    maxPods: 40                    # 최대 파드 수
+    systemReserved:                # 시스템이 예약하는 리소스
+      cpu: 100m
+      memory: 100Mi
+      ephemeral-storage: 1Gi
+    kubeReserved:                  # 쿠버네티스가 예약하는 리소스
+      cpu: 200m
+      memory: 100Mi
+      ephemeral-storage: 3Gi
+    evictionSoft:                 # 소프트 퇴출 임계값 (일정 시간 후 퇴출)
+      memory.available: 8%
+      nodefs.available: 15%
+      nodefs.inodesFree: 15%
+      imagefs.available: 15%
+      imagefs.inodesFree: 15%
+      pid.available: 15%
+    evictionSoftGracePeriod:      # 소프트 퇴출 대기 시간
+      memory.available: 1m
+      nodefs.available: 1m
+      nodefs.inodesFree: 1m
+      imagefs.available: 1m
+      imagefs.inodesFree: 1m
+      pid.available: 1m
+    evictionMaxPodGracePeriod: 60  # default는 180으로 느림
+    evictionHard:                 # 하드 강제 퇴출 임계값 (리소스 부족 시 즉시 퇴출)
+      memory.available: 5%
+      nodefs.available: 10%
+      nodefs.inodesFree: 10%
+      imagefs.available: 8%
+      imagefs.inodesFree: 10%
+      pid.available: 10%
+    evictionMaxPodGracePeriod: 60 # 최대 파드 종료 대기 시간(초)
+    imageGCHighThresholdPercent: 85 # 이미지 가비지 컬렉션 상한 임계값(퍼센트)
+    imageGCLowThresholdPercent: 80  # 이미지 가비지 컬렉션 하한 임계값(퍼센트)
+    cpuCFSQuota: true              # CPU CFS 쿼타 사용 여부
+    clusterDNS: ["172.20.0.10"]    # 클러스터 DNS IP
+
+  amiFamily: AL2023  # Kubernetes 1.33버전부터는 Amazon Linux 2 지원 안함
+
+  amiSelectorTerms:
+    - alias: al2023@latest  # 어떤 AMI 이미지를 사용할지 선택, latest는 업데이트 임의로 일어날 가능성이 있음
+
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: matchfit-eks  # 서브넷에 해당 태그를 달아야 함
+    - id: subnet-09fa4a0a8f233a921  # 실제 서브넷 id로 수정해야 함 ***
+    # - id: subnet-09fa4a0a8f233a921  # 실제 서브넷 id로 수정해야 함 ***
+    # - id: subnet-09fa4a0a8f233a921  # 실제 서브넷 id로 수정해야 함 ***
+
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: matchfit-eks  # EC2 노드 보안 그룹에 해당 태그를 달아야 함 ***
+    - id: sg-063d7acfb4b06c82c  # 실제 인프라 노드 보안 그룹 id로 수정해야 함 ***
+
+  role: KarpenterNodeRole-matchfit-eks  # EC2 노드에 할당할 IAM Role 생성해야 함 ***
+
+  tags:
+    Project: matchfit
+    Environment: dev
+
+  detailedMonitoring: true  # CloudWatch에서 1분 단위의 성능 데이터 수집 가능

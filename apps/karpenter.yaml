@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: karpenter
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: oci://public.ecr.aws/karpenter/karpenter
+    chart: karpenter
+    targetRevision: "1.6.1"
+    helm:
+      values: |
+        settings:
+          clusterName: matchfit-eks
+          interruptionQueue: karpenter-${CLUSTER_NAME}   # infra에서 만든 SQS name과 일치시킬 것
+        serviceAccount:
+          create: true
+          name: karpenter
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::061039804626:role/matchfit-eks-karpenter
+        crds:
+          install: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: karpenter
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
