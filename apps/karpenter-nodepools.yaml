@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: karpenter-nodepools
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"  # 전체적인 순서 변경해야 함
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  source:
+    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
+    targetRevision: feat/s3-irsa
+    path: base/karpenter
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

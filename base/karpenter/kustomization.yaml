@@ -1,0 +1,3 @@
+resources:
+  - ec2nodeclass.yaml
+  - nodepool-default.yaml

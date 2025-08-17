@@ -4,7 +4,7 @@ metadata:
   name: karpenter
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "1"  # 전체적인 순서 변경해야 함
 spec:
   project: default
   source:
@@ -15,7 +15,7 @@ spec:
       values: |
         settings:
           clusterName: matchfit-eks
-          interruptionQueue: karpenter-${CLUSTER_NAME}   # infra에서 만든 SQS name과 일치시킬 것
+          interruptionQueue: karpenter-${CLUSTER_NAME}   # infra에서 만든 SQS name과 일치시킬 것, ${CLUSTER_NAME}이 맞을 듯?
         serviceAccount:
           create: true
           name: karpenter
@@ -25,7 +25,7 @@ spec:
           install: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: karpenter
+    namespace: kube-system  # 문서 권장 (우선순위 FlowSchema 혜택)
   syncPolicy:
     automated:
       prune: true
