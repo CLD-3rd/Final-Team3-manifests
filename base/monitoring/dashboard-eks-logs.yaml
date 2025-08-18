@@ -372,7 +372,7 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "FluentBit Log",
+      "title": "MatchFit EKS Logs",
       "uid": "943cb968-c8f0-4780-8f72-2fc6aa443c08",
       "version": 3
     }
