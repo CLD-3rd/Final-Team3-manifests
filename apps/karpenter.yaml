@@ -4,7 +4,7 @@ metadata:
   name: karpenter
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"  # 전체적인 순서 변경해야 함
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
@@ -15,7 +15,7 @@ spec:
       values: |
         settings:
           clusterName: matchfit-eks
-          interruptionQueue: matchfit-eks   # infra에서 만든 SQS name과 일치시킬 것, ${CLUSTER_NAME}이 맞을 듯?
+          interruptionQueue: matchfit-eks   # infra에서 만든 SQS name과 일치시킬 것
         serviceAccount:
           create: true
           name: karpenter

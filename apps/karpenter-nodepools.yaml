@@ -4,7 +4,7 @@ metadata:
   name: karpenter-nodepools
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"  # 전체적인 순서 변경해야 함
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   destination:

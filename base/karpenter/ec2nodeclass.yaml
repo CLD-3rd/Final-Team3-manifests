@@ -49,14 +49,10 @@ spec:
   subnetSelectorTerms:
     - tags:
         karpenter.sh/discovery: matchfit-eks  # 서브넷에 해당 태그를 달아야 함
-    - id: subnet-09fa4a0a8f233a921  # 실제 서브넷 id로 수정해야 함 *** 태그만 쓸까?
-    # - id: subnet-09fa4a0a8f233a921  # 실제 서브넷 id로 수정해야 함 ***
-    # - id: subnet-09fa4a0a8f233a921  # 실제 서브넷 id로 수정해야 함 ***
 
   securityGroupSelectorTerms:
     - tags:
         karpenter.sh/discovery: matchfit-eks  # EC2 노드 보안 그룹에 해당 태그를 달아야 함 ***
-    - id: sg-063d7acfb4b06c82c  # 실제 인프라 노드 보안 그룹 id로 수정해야 함 *** 태그만 쓸까?
 
   role: KarpenterNodeRole-matchfit-eks  # EC2 노드에 할당할 IAM Role 생성해야 함 ***
 

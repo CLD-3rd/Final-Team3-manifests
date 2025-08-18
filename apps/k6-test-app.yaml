@@ -1,24 +1,19 @@
-# 로컬 레포 안의 Helm 차트(k6-test/)를 배포하는 ArgoCD Application
-# - App-of-Apps 루트(root-app.yaml)가 apps/ 경로를 보고 있으므로 여기에 추가
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: k6-test                         # ArgoCD UI에 표시될 앱 이름 (고유)
+  name: k6-test
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "30"  # kube-ops-view 이후 실행하고 싶을 때 숫자를 더 크게
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
-    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git  # ✅ 팀 레포
-    targetRevision: feat/s3-irsa                                   # ✅ 사용하는 브랜치
-    path: k6-test                                                  # ✅ 아래 차트 디렉토리명과 일치해야 함
+    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
+    targetRevision: feat/s3-irsa
+    path: k6-test
   destination:
     server: https://kubernetes.default.svc
-    namespace: k6-test                                             # ✅ 전용 네임스페이스(팀 충돌 최소화)
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    namespace: k6-test
+  syncPolicy: {}
     syncOptions:
-      - CreateNamespace=true                                       # 네임스페이스 없으면 자동 생성
+      - CreateNamespace=true
