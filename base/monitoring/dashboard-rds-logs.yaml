@@ -34,7 +34,7 @@ data:
         {
           "datasource": {
             "type": "cloudwatch",
-            "uid": "eeuqc1a8tgirka"
+            "uid": "cloudwatch"
           },
           "fieldConfig": {
             "defaults": {},
@@ -63,7 +63,7 @@ data:
             {
               "datasource": {
                 "type": "cloudwatch",
-                "uid": "eeuqc1a8tgirka"
+                "uid": "cloudwatch"
               },
               "dimensions": {},
               "expression": "fields @timestamp, @message |\r\nsort @timestamp desc |\r\nlimit 50",
@@ -97,7 +97,7 @@ data:
         {
           "datasource": {
             "type": "cloudwatch",
-            "uid": "eeuqc1a8tgirka"
+            "uid": "cloudwatch"
           },
           "fieldConfig": {
             "defaults": {},
@@ -126,7 +126,7 @@ data:
             {
               "datasource": {
                 "type": "cloudwatch",
-                "uid": "eeuqc1a8tgirka"
+                "uid": "cloudwatch"
               },
               "dimensions": {},
               "expression": "fields @timestamp, @message\r\n| sort @timestamp desc\r\n| limit 50",
@@ -160,7 +160,7 @@ data:
         {
           "datasource": {
             "type": "cloudwatch",
-            "uid": "eeuqc1a8tgirka"
+            "uid": "cloudwatch"
           },
           "fieldConfig": {
             "defaults": {},
@@ -189,7 +189,7 @@ data:
             {
               "datasource": {
                 "type": "cloudwatch",
-                "uid": "eeuqc1a8tgirka"
+                "uid": "cloudwatch"
               },
               "dimensions": {},
               "expression": "fields @timestamp, @message\r\n| sort @timestamp desc\r\n| limit 50",
