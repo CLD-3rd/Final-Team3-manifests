@@ -42,7 +42,6 @@ data:
         jsonData:
           authType: default
           defaultRegion: ap-northeast-2
-          catalog: AwsDataCatalog
           database: matchfit_cloudfront_logs_db
           workgroup: primary
           outputLocation: s3://matchfit-cloudfront-logging/athena-query-results/
