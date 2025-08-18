@@ -223,7 +223,11 @@ data:
       ],
       "preload": false,
       "schemaVersion": 41,
-      "tags": [],
+      "tags": [
+        "matchfit",
+        "aws",
+        "rds"
+      ],
       "templating": {
         "list": []
       },
