@@ -17,10 +17,8 @@ spec:
           clusterName: matchfit-eks
           interruptionQueue: matchfit-eks   # infra에서 만든 SQS name과 일치시킬 것
         serviceAccount:
-          create: true
+          create: false
           name: karpenter
-          annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::061039804626:role/matchfit-eks-karpenter
         crds:
           install: true
   destination:
