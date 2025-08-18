@@ -33,7 +33,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "시간대별 요청 수 추이 확인, 트래픽 패턴 분석, 피크 시간 파악",
           "fieldConfig": {
@@ -124,7 +124,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 1,
               "rawSQL": "SELECT \n    date_parse(CONCAT(date, ' ', time), '%Y-%m-%d %H:%i:%s') as timestamp,\n    COUNT(*) as request_count\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '7' day, '%Y-%m-%d')\nGROUP BY date, time\nORDER BY timestamp",
@@ -137,7 +137,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "HTTP 응답 코드별 분포 확인, 성공/실패 비율 모니터링, 에러 상황 파악",
           "fieldConfig": {
@@ -198,7 +198,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 0,
               "rawSQL": "SELECT \n    CASE \n        WHEN sc_status = 200 THEN 'HTTP 200 (Success)'\n        WHEN sc_status = 304 THEN 'HTTP 304 (Not Modified)'\n        WHEN sc_status = 404 THEN 'HTTP 404 (Not Found)'\n        WHEN sc_status BETWEEN 500 AND 599 THEN 'HTTP 5xx (Server Error)'\n        WHEN sc_status BETWEEN 400 AND 499 THEN 'HTTP 4xx (Client Error)'\n        ELSE CONCAT('HTTP ', CAST(sc_status AS VARCHAR))\n    END AS status_label,\n    COUNT(*) AS value\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY 1\nORDER BY value DESC",
@@ -211,7 +211,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "실제 페이지 경로별 요청 수 확인 (정적 파일 제외), 인기 콘텐츠 분석",
           "fieldConfig": {
@@ -306,7 +306,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 0,
               "rawSQL": "SELECT \n    cs_uri_stem as uri_path,\n    COUNT(*) as hits\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nAND cs_uri_stem NOT LIKE '%.css'\nAND cs_uri_stem NOT LIKE '%.js' \nAND cs_uri_stem NOT LIKE '%.ico'\nAND cs_uri_stem NOT LIKE '%.png'\nAND cs_uri_stem NOT LIKE '%.jpg'\nAND cs_uri_stem NOT LIKE '%.gif'\nAND cs_uri_stem NOT LIKE '%.woff%'\nAND cs_uri_stem NOT LIKE '%/static/%'\nAND cs_uri_stem NOT LIKE '%/_next/%'\nGROUP BY cs_uri_stem\nORDER BY hits DESC\nLIMIT 10",
@@ -319,7 +319,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "시간대별 에러율 추이, 서비스 안정성 모니터링, 장애 조기 감지",
           "fieldConfig": {
@@ -412,7 +412,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 1,
               "rawSQL": "SELECT \n    date_parse(CONCAT(date, ' ', time), '%Y-%m-%d %H:%i:%s') as timestamp,\n    SUM(CASE WHEN sc_status >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as error_rate\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY date, time\nORDER BY timestamp",
@@ -425,7 +425,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "응답 시간 분석 (평균, 95퍼센타일, 최대값), 성능 저하 감지, SLA 모니터링",
           "fieldConfig": {
@@ -516,7 +516,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 1,
               "rawSQL": "SELECT \n    date_parse(CONCAT(date, ' ', time), '%Y-%m-%d %H:%i:%s') as timestamp,\n    AVG(time_taken) as avg_response_time,\n    APPROX_PERCENTILE(time_taken, 0.95) as p95_response_time,\n    MAX(time_taken) as max_response_time\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY date, time\nORDER BY timestamp",
@@ -529,7 +529,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "대역폭 사용량 모니터링, 네트워크 비용 관리, 용량 계획",
           "fieldConfig": {
@@ -620,7 +620,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 1,
               "rawSQL": "SELECT \n    date_parse(CONCAT(date, ' ', time), '%Y-%m-%d %H:%i:%s') as timestamp,\n    SUM(sc_bytes) as bandwidth_bytes\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY date, time\nORDER BY timestamp",
@@ -633,7 +633,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "엣지 로케이션별 트래픽 분포, 지역별 사용자 분포 파악, 인프라 최적화",
           "fieldConfig": {
@@ -728,7 +728,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 0,
               "rawSQL": "SELECT \n    x_edge_location as edge_location,\n    COUNT(*) as requests\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY x_edge_location\nORDER BY requests DESC\nLIMIT 15",
@@ -741,7 +741,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "SSL 프로토콜 및 암호화 방식 분포, 보안 설정 점검",
           "fieldConfig": {
@@ -802,7 +802,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 0,
               "rawSQL": "SELECT \n    CASE \n        WHEN ssl_protocol = 'TLSv1.3' THEN 'TLS 1.3 (Secure)'\n        WHEN ssl_protocol = 'TLSv1.2' THEN 'TLS 1.2 (Good)'\n        WHEN ssl_protocol = 'TLSv1.1' THEN 'TLS 1.1 (Deprecated)'\n        WHEN ssl_protocol = 'TLSv1' OR ssl_protocol = 'TLSv1.0' THEN 'TLS 1.0 (Insecure)'\n        WHEN ssl_protocol = 'SSLv3' THEN 'SSL 3.0 (Very Insecure)'\n        WHEN ssl_protocol = 'SSLv2' THEN 'SSL 2.0 (Very Insecure)'\n        WHEN ssl_protocol = '-' OR ssl_protocol IS NULL THEN 'Unknown/Not Recorded'\n        ELSE CONCAT('Other: ', ssl_protocol)\n    END as ssl_version,\n    COUNT(*) as requests\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY ssl_protocol\nORDER BY requests DESC",
@@ -815,7 +815,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "클라이언트 유형별 트래픽 분석, 봇/크롤러 vs 실제 사용자 구분",
           "fieldConfig": {
@@ -877,7 +877,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 0,
               "rawSQL": "SELECT \n    CASE \n        WHEN cs_user_agent LIKE '%bot%' OR cs_user_agent LIKE '%crawler%' OR cs_user_agent LIKE '%spider%' THEN 'Bot/Crawler'\n        WHEN cs_user_agent LIKE '%Mobile%' OR cs_user_agent LIKE '%Android%' OR cs_user_agent LIKE '%iPhone%' THEN 'Mobile Browser'\n        WHEN cs_user_agent LIKE '%curl%' OR cs_user_agent LIKE '%wget%' OR cs_user_agent LIKE '%python%' OR cs_user_agent LIKE '%postman%' THEN 'Automated Tools'\n        WHEN cs_user_agent LIKE '%Chrome%' OR cs_user_agent LIKE '%Firefox%' OR cs_user_agent LIKE '%Safari%' THEN 'Desktop Browser'\n        ELSE 'Other/Unknown'\n    END as client_type,\n    COUNT(*) as requests\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY CASE \n        WHEN cs_user_agent LIKE '%bot%' OR cs_user_agent LIKE '%crawler%' OR cs_user_agent LIKE '%spider%' THEN 'Bot/Crawler'\n        WHEN cs_user_agent LIKE '%Mobile%' OR cs_user_agent LIKE '%Android%' OR cs_user_agent LIKE '%iPhone%' THEN 'Mobile Browser'\n        WHEN cs_user_agent LIKE '%curl%' OR cs_user_agent LIKE '%wget%' OR cs_user_agent LIKE '%python%' OR cs_user_agent LIKE '%postman%' THEN 'Automated Tools'\n        WHEN cs_user_agent LIKE '%Chrome%' OR cs_user_agent LIKE '%Firefox%' OR cs_user_agent LIKE '%Safari%' THEN 'Desktop Browser'\n        ELSE 'Other/Unknown'\n    END\nORDER BY requests DESC",
@@ -890,7 +890,7 @@ data:
         {
           "datasource": {
             "type": "grafana-athena-datasource",
-            "uid": "aeuqhl7v93x8gc"
+            "uid": "athena"
           },
           "description": "이상 트래픽 패턴을 보이는 IP 주소 탐지, DDoS 및 봇 공격 모니터링",
           "fieldConfig": {
@@ -957,7 +957,7 @@ data:
               },
               "datasource": {
                 "type": "grafana-athena-datasource",
-                "uid": "aeuqhl7v93x8gc"
+                "uid": "athena"
               },
               "format": 0,
               "rawSQL": "SELECT \n    COALESCE(x_forwarded_for, c_ip) as client_ip,\n    COUNT(*) as request_count,\n    COUNT(DISTINCT cs_uri_stem) as unique_paths,\n    SUM(CASE WHEN sc_status = 404 THEN 1 ELSE 0 END) as not_found_count,\n    SUM(CASE WHEN sc_status >= 400 THEN 1 ELSE 0 END) as error_count\nFROM cloudfront_logs\nWHERE date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nGROUP BY COALESCE(x_forwarded_for, c_ip)\nHAVING COUNT(*) > 1000 OR SUM(CASE WHEN sc_status = 404 THEN 1 ELSE 0 END) > 50 OR SUM(CASE WHEN sc_status >= 400 THEN 1 ELSE 0 END) > 100\nORDER BY COUNT(*) DESC\nLIMIT 20",
