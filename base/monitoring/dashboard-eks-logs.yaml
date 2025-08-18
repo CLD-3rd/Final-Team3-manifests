@@ -33,7 +33,7 @@ data:
         {
           "datasource": {
             "type": "cloudwatch",
-            "uid": "eeuqc1a8tgirka"
+            "uid": "cloudwatch"
           },
           "description": "전체 로그 패널",
           "fieldConfig": {
@@ -103,7 +103,7 @@ data:
             {
               "datasource": {
                 "type": "cloudwatch",
-                "uid": "eeuqc1a8tgirka"
+                "uid": "cloudwatch"
               },
               "dimensions": {},
               "expression": "fields @timestamp, @message\r\n| sort @timestamp desc\r\n| limit 100\r\n",
@@ -137,7 +137,7 @@ data:
         {
           "datasource": {
             "type": "cloudwatch",
-            "uid": "eeuqc1a8tgirka"
+            "uid": "cloudwatch"
           },
           "description": "에러, 예외, 실패 관련 로그만 표시",
           "fieldConfig": {
@@ -207,7 +207,7 @@ data:
             {
               "datasource": {
                 "type": "cloudwatch",
-                "uid": "eeuqc1a8tgirka"
+                "uid": "cloudwatch"
               },
               "dimensions": {},
               "expression": "fields @timestamp, @message\r\n| filter @message like /(?i)(ERROR|Exception|Fail)/\r\n| sort @timestamp desc\r\n| limit 100\r\n",
@@ -241,7 +241,7 @@ data:
         {
           "datasource": {
             "type": "cloudwatch",
-            "uid": "eeuqc1a8tgirka"
+            "uid": "cloudwatch"
           },
           "description": "시간별 에러 수 ",
           "fieldConfig": {
@@ -324,7 +324,7 @@ data:
             {
               "datasource": {
                 "type": "cloudwatch",
-                "uid": "eeuqc1a8tgirka"
+                "uid": "cloudwatch"
               },
               "dimensions": {},
               "expression": "filter @message like /(?i)(ERROR|Exception|Fail)/\r\n| stats count(*) as error_count by bin(1m)\r\n",
