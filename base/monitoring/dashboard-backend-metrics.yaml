@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backend-grafana-dashboard
+  name: backend-metrics-dashboard
   namespace: monitoring
   labels:
     grafana_dashboard: "1"   # 반드시 values.yaml의 sidecar.label과 일치 (문자열 권장)
 data:
-  backend-dashboard.json: |-
+  backend-metrics-dashboard.json: |-
     {
       "annotations": {
         "list": [
