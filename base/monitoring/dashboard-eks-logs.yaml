@@ -361,7 +361,8 @@ data:
       "preload": false,
       "schemaVersion": 41,
       "tags": [
-        "matchfit"
+        "matchfit",
+        "eks"
       ],
       "templating": {
         "list": []
