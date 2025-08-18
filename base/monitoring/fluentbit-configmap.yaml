@@ -16,16 +16,25 @@ data:
         HTTP_Listen   0.0.0.0
         HTTP_Port     2020
         Health_Check  On
+
+    @INCLUDE input-kubernetes.conf
+    @INCLUDE filter-kubernetes.conf
+    @INCLUDE output-cloudwatch.conf
+    @INCLUDE output-prometheus.conf
+
+  input-kubernetes.conf: |
     [INPUT]
         Name              tail
         Path              /var/log/containers/*.log
-        Parser            docker
+        Parser            json         # <-- 여기 'docker' 대신 'json' 사용
         Tag               kube.*
         Refresh_Interval  5
         Mem_Buf_Limit     50MB
         Skip_Long_Lines   On
         DB                /var/log/flb_kube.db
         DB.Sync           Normal
+
+  filter-kubernetes.conf: |
     [FILTER]
         Name                kubernetes
         Match               kube.*
@@ -39,13 +48,18 @@ data:
         K8S-Logging.Exclude On
         Annotations         Off
         Labels              On
+
+  output-cloudwatch.conf: |
     [OUTPUT]
         Name                cloudwatch_logs
-        Match               *
+        Match               kube.*
         region              ap-northeast-2
         log_group_name      /matchfit-fluentbit/logs
         log_stream_prefix   from-matchfit-
         auto_create_group   true
+        retry_limit         5
+
+  output-prometheus.conf: |
     [OUTPUT]
         Name                prometheus_exporter
         Match               *
@@ -53,17 +67,16 @@ data:
         Port                2020
         Add_Label           job fluentbit
         Add_Label           instance ${HOSTNAME}
+
   parsers.conf: |
     [PARSER]
-        Name   docker
-        Format json
-        Time_Key time
-        Time_Format %Y-%m-%dT%H:%M:%S.%L
-        Time_Keep   On
-        
+        Name        json
+        Format      json
+        # Time_Key/Time_Format를 지정하지 않으면 Fluent Bit가 내부 타임스탬프 사용
+        # 필요한 경우 아래 주석을 해제하고 Logstash의 @timestamp 포맷에 맞추세요.
+        # Time_Key    @timestamp
+        # Time_Format %Y-%m-%dT%H:%M:%S.%LZ
+
     [PARSER]
-        Name   k8s-nginx
-        Format regex
-        Regex ^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
-        Time_Key time
-        Time_Format %d/%b/%Y:%H:%M:%S %z
+        Name        cri
+        Format      json
