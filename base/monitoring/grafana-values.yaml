@@ -2,8 +2,8 @@ grafana:
   serviceAccount:
     create: false
     name: grafana-sa
-  plugins:
-    - grafana-athena-datasource
+  env:
+    GF_INSTALL_PLUGINS: grafana-athena-datasource
     
   # Grafana provisioning / dashboard sidecar (kube-prometheus-stack 지원)
   sidecar:
