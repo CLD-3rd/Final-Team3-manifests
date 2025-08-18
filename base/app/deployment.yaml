@@ -33,4 +33,4 @@ spec:
             - containerPort: 8080
           envFrom:
             - secretRef:
-                name: env-vars
+                name: argocd-env-vars
