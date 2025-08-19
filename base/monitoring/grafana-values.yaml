@@ -32,3 +32,9 @@ grafana:
           options:
             path: /var/lib/grafana/dashboards/default
 
+prometheus:
+  prometheusSpec:
+    ruleSelector:
+      matchLabels:
+        prometheus: kube-prometheus-stack
+        role: alert-rules
