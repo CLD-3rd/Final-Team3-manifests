@@ -29,9 +29,9 @@ spec:
         summary: "EKS Node가 Ready 상태가 아님"
         description: "Node {{$labels.node}}가 Ready 상태가 아닙니다. 즉시 확인이 필요합니다."
 
-    # EKS Node CPU 과다 사용 (Warning: 80%)
+    # EKS Node CPU 과다 사용 (Warning: 85%)
     - alert: EKSNodeHighCPU
-      expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+      expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
       for: 10m
       labels:
         severity: warning
@@ -43,9 +43,9 @@ spec:
         summary: "EKS Node CPU 사용률 높음"
         description: "Node {{$labels.instance}}의 CPU 사용률이 {{$value | printf \"%.1f\"}}%입니다. 임계값: 80%"
 
-    # EKS Node CPU 매우 높음 (Critical: 90%)
+    # EKS Node CPU 매우 높음 (Critical: 95%)
     - alert: EKSNodeCriticalCPU
-      expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+      expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 95
       for: 5m
       labels:
         severity: critical
@@ -113,7 +113,7 @@ spec:
         summary: "EKS Pod 재시작 빈발"
         description: "Pod {{$labels.namespace}}/{{$labels.pod}}가 지난 1시간 동안 {{$value}}번 재시작했습니다."
 
-    # Pod OOMKilled (즉시 알림)
+    # Pod OOMKilled
     - alert: EKSPodOOMKilled
       expr: increase(kube_pod_container_status_terminated_reason{reason="OOMKilled"}[5m]) > 0
       for: 0m
@@ -132,14 +132,14 @@ spec:
     interval: 15s
     rules:
     
-    # MatchFit Backend Pod CPU 사용률 높음 (Warning: 70%)
+    # MatchFit Backend Pod CPU 사용률 높음 (Warning: 85%)
     - alert: MatchFitBackendHighCPU
       expr: |
         (
           sum(rate(container_cpu_usage_seconds_total{namespace="argocd", pod=~".*backend.*"}[5m])) by (pod)
           /
           sum(kube_pod_container_resource_limits{namespace="argocd", pod=~".*backend.*", resource="cpu"}) by (pod)
-        ) * 100 > 70
+        ) * 100 > 85
       for: 5m
       labels:
         severity: warning
@@ -150,16 +150,16 @@ spec:
         service: matchfit-backend
       annotations:
         summary: "MatchFit Backend CPU 사용률 높음"
-        description: "MatchFit Backend Pod {{$labels.pod}}의 CPU 사용률이 {{$value | printf \"%.1f\"}}%입니다. 임계값: 70%"
+        description: "MatchFit Backend Pod {{$labels.pod}}의 CPU 사용률이 {{$value | printf \"%.1f\"}}%입니다. 임계값: 85%"
 
-    # MatchFit Backend Pod CPU 매우 높음 (Critical: 90%)
+    # MatchFit Backend Pod CPU 매우 높음 (Critical: 95%)
     - alert: MatchFitBackendCriticalCPU
       expr: |
         (
           sum(rate(container_cpu_usage_seconds_total{namespace="argocd", pod=~".*backend.*"}[5m])) by (pod)
           /
           sum(kube_pod_container_resource_limits{namespace="argocd", pod=~".*backend.*", resource="cpu"}) by (pod)
-        ) * 100 > 90
+        ) * 100 > 95
       for: 2m
       labels:
         severity: critical
@@ -172,14 +172,14 @@ spec:
         summary: "MatchFit Backend CPU 사용률 매우 높음"
         description: "MatchFit Backend Pod {{$labels.pod}}의 CPU 사용률이 {{$value | printf \"%.1f\"}}%로 매우 높습니다."
 
-    # MatchFit Backend Pod 메모리 높음 (Warning: 80%)
+    # MatchFit Backend Pod 메모리 높음 (Warning: 85%)
     - alert: MatchFitBackendHighMemory
       expr: |
         (
           sum(container_memory_working_set_bytes{namespace="argocd", pod=~".*backend.*"}) by (pod)
           /
           sum(kube_pod_container_resource_limits{namespace="argocd", pod=~".*backend.*", resource="memory"}) by (pod)
-        ) * 100 > 80
+        ) * 100 > 85
       for: 5m
       labels:
         severity: warning
@@ -190,7 +190,7 @@ spec:
         service: matchfit-backend
       annotations:
         summary: "MatchFit Backend 메모리 사용률 높음"
-        description: "MatchFit Backend Pod {{$labels.pod}}의 메모리 사용률이 {{$value | printf \"%.1f\"}}%입니다. 임계값: 80%"
+        description: "MatchFit Backend Pod {{$labels.pod}}의 메모리 사용률이 {{$value | printf \"%.1f\"}}%입니다. 임계값: 85%"
 
     # MatchFit Backend Pod 메모리 매우 높음 (Critical: 95%)
     - alert: MatchFitBackendCriticalMemory
