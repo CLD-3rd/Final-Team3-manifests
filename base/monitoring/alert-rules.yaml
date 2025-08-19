@@ -31,8 +31,8 @@ spec:
 
     # EKS Node CPU 과다 사용 (Warning: 85%)
     - alert: EKSNodeHighCPU
-      expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 1
-      for: 1m
+      expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
+      for: 10m
       labels:
         severity: warning
         team: devops
@@ -41,7 +41,7 @@ spec:
         cluster: matchfit-eks
       annotations:
         summary: "EKS Node CPU 사용률 높음"
-        description: "Node {{$labels.instance}}의 CPU 사용률이 {{$value | printf \"%.1f\"}}%입니다. 임계값: 80%"
+        description: "Node {{$labels.instance}}의 CPU 사용률이 {{$value | printf \"%.1f\"}}%입니다. 임계값: 85%"
 
     # EKS Node CPU 매우 높음 (Critical: 95%)
     - alert: EKSNodeCriticalCPU
