@@ -16,3 +16,4 @@ resources:
   - dashboard-rds-logs.yaml
   - grafana-rbac.yaml
   - grafana-datasources.yaml
+  - alert-rules.yaml
