@@ -39,7 +39,7 @@ alertmanager:
       - to: 'dngl1232@gmail.com'
         headers:
           subject: '[MatchFit Monitoring] {{ .GroupLabels.alertname }} - {{ .Status | toUpper }}'
-        html: |-
+        html: |
           <h2>MatchFit Alert: {{ .GroupLabels.alertname }}</h2>
           <p><b>Status:</b> {{ .Status | toUpper }}</p>
           <p><b>Cluster:</b> matchfit-eks</p>
@@ -64,7 +64,7 @@ alertmanager:
       - to: 'dngl1232@gmail.com'
         headers:
           subject: '[MatchFit Monitoring] CRITICAL - {{ .GroupLabels.alertname }}'
-        html: |-
+        html: |
           <div style="background-color:#f8d7da;border:1px solid #f5c6cb;padding:15px;">
             <h2 style="color:#721c24;">🚨 CRITICAL ALERT 🚨</h2>
             <p><b>Alert:</b> {{ .GroupLabels.alertname }}</p>
@@ -88,7 +88,7 @@ alertmanager:
       - to: 'dngl1232@gmail.com'
         headers:
           subject: '[MatchFit Monitoring] WARNING - {{ .GroupLabels.alertname }}'
-        html: |-
+        html: |
           <div style="background-color:#fff3cd;border:1px solid #ffeaa7;padding:15px;">
             <h2 style="color:#856404;">⚠ WARNING ALERT ⚠</h2>
             <p><b>Alert:</b> {{ .GroupLabels.alertname }}</p>
