@@ -5,7 +5,7 @@ alertmanager:
       smtp_smarthost: 'smtp.gmail.com:587'
       smtp_from: 'dngl1232@gmail.com'
       smtp_auth_username: 'dngl1232@gmail.com'
-      smtp_auth_password: 'GMAIL_APP_PASSWORD'
+      smtp_auth_password: '${GMAIL_APP_PASSWORD}'
       smtp_require_tls: true
 
     route:
