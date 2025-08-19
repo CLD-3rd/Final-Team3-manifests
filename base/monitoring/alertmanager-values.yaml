@@ -43,14 +43,12 @@ alertmanager:
           <h2>MatchFit Alert: {{ .GroupLabels.alertname }}</h2>
           <p><b>Status:</b> {{ .Status | toUpper }}</p>
           <p><b>Cluster:</b> matchfit-eks</p>
-          <p><b>Time:</b> {{ now.Format "2006-01-02 15:04:05" }}</p>
-
           <h3>Alert Details:</h3>
           {{ range .Alerts }}
           <div style="border:1px solid #ddd;padding:10px;margin:10px 0;">
-            <p><b>Summary:</b> {{ .Annotations.summary | default "N/A" }}</p>
-            <p><b>Description:</b> {{ .Annotations.description | default "N/A" }}</p>
-            <p><b>Started:</b> {{ .StartsAt.Format "2006-01-02 15:04:05" }}</p>
+            <p><b>Summary:</b> {{ if .Annotations.summary }}{{ .Annotations.summary }}{{ else }}N/A{{ end }}</p>
+            <p><b>Description:</b> {{ if .Annotations.description }}{{ .Annotations.description }}{{ else }}N/A{{ end }}</p>
+            <p><b>Started:</b> {{ .StartsAt | humanizeTimestamp }}</p>
             <ul>
               {{ if .Labels.node }}<li><b>Node:</b> {{ .Labels.node }}</li>{{ end }}
               {{ if .Labels.pod }}<li><b>Pod:</b> {{ .Labels.pod }}</li>{{ end }}
@@ -70,18 +68,18 @@ alertmanager:
             <p><b>Alert:</b> {{ .GroupLabels.alertname }}</p>
             <p><b>Status:</b> {{ .Status | toUpper }}</p>
             <p><b>Cluster:</b> matchfit-eks</p>
-            <p><b>Time:</b> {{ now.Format "2006-01-02 15:04:05" }}</p>
           </div>
           {{ range .Alerts }}
           <div style="border:2px solid #dc3545;padding:10px;margin:10px 0;">
-            <p><b>Summary:</b> {{ .Annotations.summary | default "N/A" }}</p>
-            <p><b>Description:</b> {{ .Annotations.description | default "N/A" }}</p>
-            <p><b>Started:</b> {{ .StartsAt.Format "2006-01-02 15:04:05" }}</p>
+            <p><b>Summary:</b> {{ if .Annotations.summary }}{{ .Annotations.summary }}{{ else }}N/A{{ end }}</p>
+            <p><b>Description:</b> {{ if .Annotations.description }}{{ .Annotations.description }}{{ else }}N/A{{ end }}</p>
+            <p><b>Started:</b> {{ .StartsAt | humanizeTimestamp }}</p>
             {{ if .Labels.node }}<p><b>Node:</b> {{ .Labels.node }}</p>{{ end }}
             {{ if .Labels.pod }}<p><b>Pod:</b> {{ .Labels.pod }}</p>{{ end }}
             {{ if .Labels.namespace }}<p><b>Namespace:</b> {{ .Labels.namespace }}</p>{{ end }}
           </div>
           {{ end }}
+
 
     - name: 'warning-alerts'
       email_configs:
@@ -94,15 +92,15 @@ alertmanager:
             <p><b>Alert:</b> {{ .GroupLabels.alertname }}</p>
             <p><b>Status:</b> {{ .Status | toUpper }}</p>
             <p><b>Cluster:</b> matchfit-eks</p>
-            <p><b>Time:</b> {{ now.Format "2006-01-02 15:04:05" }}</p>
           </div>
           {{ range .Alerts }}
           <div style="border:1px solid #ffc107;padding:10px;margin:10px 0;">
-            <p><b>Summary:</b> {{ .Annotations.summary | default "N/A" }}</p>
-            <p><b>Description:</b> {{ .Annotations.description | default "N/A" }}</p>
-            <p><b>Started:</b> {{ .StartsAt.Format "2006-01-02 15:04:05" }}</p>
+            <p><b>Summary:</b> {{ if .Annotations.summary }}{{ .Annotations.summary }}{{ else }}N/A{{ end }}</p>
+            <p><b>Description:</b> {{ if .Annotations.description }}{{ .Annotations.description }}{{ else }}N/A{{ end }}</p>
+            <p><b>Started:</b> {{ .StartsAt | humanizeTimestamp }}</p>
             {{ if .Labels.node }}<p><b>Node:</b> {{ .Labels.node }}</p>{{ end }}
             {{ if .Labels.pod }}<p><b>Pod:</b> {{ .Labels.pod }}</p>{{ end }}
             {{ if .Labels.namespace }}<p><b>Namespace:</b> {{ .Labels.namespace }}</p>{{ end }}
           </div>
           {{ end }}
+
