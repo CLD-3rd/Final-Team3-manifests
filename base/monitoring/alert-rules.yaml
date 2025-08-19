@@ -216,7 +216,7 @@ spec:
     - alert: MatchFitBackendHighResponseTime
       expr: |
         histogram_quantile(0.95,
-          sum(rate(http_server_requests_seconds_bucket{application="matchfit-backend"}[5m])) by (le, uri)
+          sum(rate(http_server_requests_seconds_bucket{job="argocd-argocd-backend"}[5m])) by (le, uri)
         ) > 2
       for: 10m
       labels:
@@ -233,9 +233,9 @@ spec:
     # MatchFit Backend 에러율 높음 (5xx > 5%)
     - alert: MatchFitBackendHighErrorRate
       expr: |
-        sum(rate(http_server_requests_seconds_count{application="matchfit-backend", status=~"5.."}[5m])) by (uri)
+        sum(rate(http_server_requests_seconds_count{job="argocd-argocd-backend", status=~"5.."}[5m])) by (uri)
         /
-        sum(rate(http_server_requests_seconds_count{application="matchfit-backend"}[5m])) by (uri)
+        sum(rate(http_server_requests_seconds_count{job="argocd-argocd-backend"}[5m])) by (uri)
         * 100 > 5
       for: 5m
       labels:
@@ -253,9 +253,9 @@ spec:
     - alert: MatchFitBackendHighJVMHeap
       expr: |
         (
-          jvm_memory_used_bytes{application="matchfit-backend", area="heap"}
+          jvm_memory_used_bytes{job="argocd-argocd-backend", area="heap"}
           /
-          jvm_memory_max_bytes{application="matchfit-backend", area="heap"}
+          jvm_memory_max_bytes{job="argocd-argocd-backend", area="heap"}
         ) * 100 > 85
       for: 5m
       labels:
@@ -271,7 +271,7 @@ spec:
 
     # MatchFit Backend 서비스 다운
     - alert: MatchFitBackendDown
-      expr: up{job="matchfit-backend"} == 0
+      expr: up{job="argocd-argocd-backend"} == 0
       for: 1m
       labels:
         severity: critical
@@ -287,7 +287,7 @@ spec:
     # MatchFit Backend GC 시간 높음
     - alert: MatchFitBackendHighGCTime
       expr: |
-        increase(jvm_gc_collection_seconds_sum{application="matchfit-backend"}[5m]) > 5
+        increase(jvm_gc_collection_seconds_sum{job="argocd-argocd-backend"}[5m]) > 5
       for: 5m
       labels:
         severity: warning
