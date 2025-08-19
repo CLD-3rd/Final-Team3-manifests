@@ -106,7 +106,7 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "New dashboard",
+      "title": "MatchFit Backend - Server logs",
       "uid": "a51e9c5b-2c71-467c-9961-1da71402e938",
       "version": 1
     }
