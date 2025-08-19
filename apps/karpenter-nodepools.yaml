@@ -12,7 +12,7 @@ spec:
     namespace: kube-system
   source:
     repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
-    targetRevision: develop
+    targetRevision: feat/s3-irsa
     path: base/karpenter
   syncPolicy:
     automated:
