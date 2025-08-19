@@ -41,8 +41,8 @@ spec:
           values: ["linux"]
         - key: karpenter.sh/capacity-type
           operator: In
-          values: ["on-demand"]        # 상황에 맞게 설정
-          # values: ["spot", "on-demand"]  # 상황에 맞게 설정
+          # values: ["on-demand"]        # 상황에 맞게 설정
+          values: ["spot", "on-demand"]  # 상황에 맞게 설정
       expireAfter: 720h # 참고: 이 값을 NodePool에서 변경하면 NodeClaim과 차이가 발생할 수 있음
   disruption:  # Karpenter가 통합(consolidation) 대상으로 고려할 노드의 유형을 설명
     consolidationPolicy: WhenEmptyOrUnderutilized  # 비어 있거나 충분히 활용되지 않는 모든 노드를 통합 대상으로 고려
