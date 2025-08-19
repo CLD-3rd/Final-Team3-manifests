@@ -49,11 +49,11 @@ alertmanager:
             <p><b>Summary:</b> {{ .Annotations.summary }}</p>
             <p><b>Description:</b> {{ .Annotations.description }}</p>
             <p><b>Started:</b> {{ .StartsAt }}</p>
-            <ul>
-              <li><b>Node:</b> {{ .Labels.node }}</li>
-              <li><b>Pod:</b> {{ .Labels.pod }}</li>
-              <li><b>Namespace:</b> {{ .Labels.namespace }}</li>
-            </ul>
+            {{ if .Labels.node }}<p><b>Node:</b> {{ .Labels.node }}</p>{{ end }}
+            {{ if .Labels.pod }}<p><b>Pod:</b> {{ .Labels.pod }}</p>{{ end }}
+            {{ if .Labels.namespace }}<p><b>Namespace:</b> {{ .Labels.namespace }}</p>{{ end }}
+            {{ if .Labels.instance }}<p><b>Instance:</b> {{ .Labels.instance }}</p>{{ end }}
+            {{ if .Labels.job }}<p><b>Job:</b> {{ .Labels.job }}</p>{{ end }}
           </div>
           {{ end }}
 
@@ -75,9 +75,11 @@ alertmanager:
             <p><b>Summary:</b> {{ .Annotations.summary }}</p>
             <p><b>Description:</b> {{ .Annotations.description }}</p>
             <p><b>Started:</b> {{ .StartsAt }}</p>
-            <p><b>Node:</b> {{ .Labels.node }}</p>
-            <p><b>Pod:</b> {{ .Labels.pod }}</p>
-            <p><b>Namespace:</b> {{ .Labels.namespace }}</p>
+            {{ if .Labels.node }}<p><b>Node:</b> {{ .Labels.node }}</p>{{ end }}
+            {{ if .Labels.pod }}<p><b>Pod:</b> {{ .Labels.pod }}</p>{{ end }}
+            {{ if .Labels.namespace }}<p><b>Namespace:</b> {{ .Labels.namespace }}</p>{{ end }}
+            {{ if .Labels.instance }}<p><b>Instance:</b> {{ .Labels.instance }}</p>{{ end }}
+            {{ if .Labels.service }}<p><b>Service:</b> {{ .Labels.service }}</p>{{ end }}
           </div>
           {{ end }}
 
@@ -89,18 +91,22 @@ alertmanager:
         headers:
           subject: '[MatchFit Monitoring] WARNING - {{ .GroupLabels.alertname }}'
         html: |
-          <h2>⚠ WARNING ALERT ⚠</h2>
-          <p><b>Alert:</b> {{ .GroupLabels.alertname }}</p>
-          <p><b>Status:</b> {{ .Status | toUpper }}</p>
-          <p><b>Cluster:</b> matchfit-eks</p>
-          <h3>Alerts:</h3>
+          <div style="background-color:#fff3cd;border:1px solid #ffeaa7;padding:15px;">
+            <h2 style="color:#856404;">⚠ WARNING ALERT ⚠</h2>
+            <p><b>Alert:</b> {{ .GroupLabels.alertname }}</p>
+            <p><b>Status:</b> {{ .Status }}</p>
+            <p><b>Cluster:</b> matchfit-eks</p>
+          </div>
+          <h3>Alert Details:</h3>
           {{ range .Alerts }}
-            <hr>
-            <p><b>Summary:</b> {{ .Annotations.summary }}</p>
-            <p><b>Description:</b> {{ .Annotations.description }}</p>
+          <div style="border:1px solid #ffc107;padding:10px;margin:10px 0;background-color:#fffbf0;">
+            <p><b>Summary:</b> {{ if .Annotations.summary }}{{ .Annotations.summary }}{{ else }}Warning condition detected{{ end }}</p>
+            <p><b>Description:</b> {{ if .Annotations.description }}{{ .Annotations.description }}{{ else }}Please monitor the system{{ end }}</p>
             <p><b>Started:</b> {{ .StartsAt }}</p>
-            <p><b>Node:</b> {{ .Labels.node }}</p>
-            <p><b>Pod:</b> {{ .Labels.pod }}</p>
-            <p><b>Namespace:</b> {{ .Labels.namespace }}</p>
+            {{ if .Labels.node }}<p><b>Node:</b> {{ .Labels.node }}</p>{{ end }}
+            {{ if .Labels.pod }}<p><b>Pod:</b> {{ .Labels.pod }}</p>{{ end }}
+            {{ if .Labels.namespace }}<p><b>Namespace:</b> {{ .Labels.namespace }}</p>{{ end }}
+            {{ if .Labels.instance }}<p><b>Instance:</b> {{ .Labels.instance }}</p>{{ end }}
+          </div>
           {{ end }}
 
