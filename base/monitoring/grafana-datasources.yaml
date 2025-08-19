@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: monitoring
+  labels:
+    grafana_datasource: "1"
+data:
+  datasources.yaml: |-
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        uid: prometheus
+        access: proxy
+        url: http://kube-prometheus-stack-prometheus:9090
+        isDefault: true
+        version: 1
+        editable: false
+        jsonData:
+          timeInterval: 30s
+          
+      - name: CloudWatch
+        type: cloudwatch
+        uid: cloudwatch
+        access: proxy
+        isDefault: false
+        version: 1
+        editable: false
+        jsonData:
+          authType: default
+          defaultRegion: ap-northeast-2
+          queryTimeout: 30m
+          
+      - name: Athena
+        type: grafana-athena-datasource
+        uid: athena
+        access: proxy
+        isDefault: false
+        version: 1
+        editable: false
+        jsonData:
+          authType: default
+          defaultRegion: ap-northeast-2
+          catalog: AwsDataCatalog
+          database: matchfit_cloudfront_logs_db
+          workgroup: primary
+          outputLocation: s3://matchfit-cloudfront-logging/athena-query-results/

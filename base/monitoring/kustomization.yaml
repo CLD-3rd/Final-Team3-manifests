@@ -14,3 +14,4 @@ resources:
   - dashboard-eks-logs.yaml
   - dashboard-rds-logs.yaml
   - grafana-rbac.yaml
+  - grafana-datasources.yaml

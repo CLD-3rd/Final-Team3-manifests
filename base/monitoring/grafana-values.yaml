@@ -2,7 +2,9 @@ grafana:
   serviceAccount:
     create: false
     name: grafana-sa
-
+  env:
+    GF_INSTALL_PLUGINS: grafana-athena-datasource
+    
   # Grafana provisioning / dashboard sidecar (kube-prometheus-stack 지원)
   sidecar:
     dashboards:
@@ -12,6 +14,12 @@ grafana:
       searchNamespace: ALL        # ConfigMaps가 다른 namespace에 있으면 변경 고려
       # optional:
       # refreshInterval: 10s
+      
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      searchNamespace: ALL
+      folder: /etc/grafana/provisioning/datasources
 
   dashboardProviders:
     dashboardproviders.yaml:
