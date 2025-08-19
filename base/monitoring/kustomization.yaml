@@ -8,7 +8,8 @@ resources:
   - fluentbit-monitor.yaml  
   - fluentbit-service.yaml 
   - cloudwatch-exporter.yaml
-  - dashboard-backend.yaml
+  - dashboard-backend-metrics.yaml
+  - dashboard-backend-logs.yaml
   - dashboard-infra-metrics.yaml
   - dashboard-cloudfront-logs.yaml
   - dashboard-eks-logs.yaml
