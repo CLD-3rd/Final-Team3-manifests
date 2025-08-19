@@ -4,16 +4,16 @@ metadata:
   name: k6-test
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
-    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git  # ✅ 팀 레포
-    targetRevision: feat/s3-irsa                              # ✅ 사용하는 브랜치
-    path: k6-test                                                  # ✅ 아래 차트 디렉토리명과 일치해야 함
+    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
+    targetRevision: feat/s3-irsa
+    path: k6-test
   destination:
     server: https://kubernetes.default.svc
     namespace: k6-test
-  syncPolicy: {}
+  syncPolicy:
     syncOptions:
       - CreateNamespace=true
