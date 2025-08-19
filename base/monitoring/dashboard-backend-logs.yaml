@@ -90,7 +90,7 @@ data:
               "statsGroups": []
             }
           ],
-          "title": "New panel",
+          "title": "Latest 30 logs",
           "type": "logs"
         }
       ],
