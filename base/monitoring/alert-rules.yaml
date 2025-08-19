@@ -32,7 +32,7 @@ spec:
     # EKS Node CPU 과다 사용 (Warning: 85%)
     - alert: EKSNodeHighCPU
       expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 1
-      for: 10m
+      for: 1m
       labels:
         severity: warning
         team: devops
