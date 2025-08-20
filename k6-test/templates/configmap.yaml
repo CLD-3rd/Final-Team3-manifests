@@ -10,10 +10,3 @@ data:
 {{ .Values.script | nindent 4 }}
 {{- end }}
 
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: {{ include "k6-test.fullname" . }}-script
-# data:
-#   test.js: |
-# {{ .Values.config.script | indent 4 }}
