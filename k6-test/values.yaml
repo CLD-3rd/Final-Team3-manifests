@@ -58,12 +58,12 @@ script_full: |-
         executor: 'ramping-arrival-rate',
         startRate: 0,
         timeUnit: '1s',
-        preAllocatedVUs: 200,
-        maxVUs: 500,
+        preAllocatedVUs: 400,
+        maxVUs: 1000,
         stages: [
           { target: 50, duration: '1m' },   // 예열
           { target: 150, duration: '2m' },  
-          { target: 300, duration: '6m' },  // 8분간 steady
+          { target: 500, duration: '6m' },  // 8분간 steady
           { target: 150, duration: '2m' },     
           { target: 0, duration: '1m' },     // 종료
         ]
