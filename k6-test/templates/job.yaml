@@ -36,7 +36,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "k6-test.fullname" . }}
+  name: k6-load-job
 spec:
   template:
     spec:
