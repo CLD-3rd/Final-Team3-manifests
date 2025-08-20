@@ -64,9 +64,24 @@ spec:
           name: kubecost-cost-analyzer
 
         kubecostModel:
+          etl: false
+          cloudCost:
+            enabled: false
+          savingsCacheWarming: false
+          etlCloudUsage: false
           extraEnv:
             - name: AWS_STS_REGIONAL_ENDPOINTS
               value: regional
+            - name: CLOUD_COST_ENABLED
+              value: "false"
+            - name: ETL_ENABLED
+              value: "false"
+            - name: ETL_CLOUD_USAGE_ENABLED
+              value: "false"
+            - name: SAVINGS_CACHE_WARMING_ENABLED
+              value: "false"
+            - name: ETL_ASSET_RECONCILIATION_ENABLED
+              value: "false"
 
   destination:
     server: https://kubernetes.default.svc
