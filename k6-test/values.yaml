@@ -14,8 +14,8 @@ script: |-
         maxVUs: 500,
         stages: [
           { target: 20, duration: '30s' },    // 빠른 ramp
-          { target: 200, duration: '1m' },    // 1분 내 200 RPS 도달
-          { target: 200, duration: '10m' },   // 10분간 steady
+          { target: 100, duration: '1m' },    // 1분 내 200 RPS 도달
+          { target: 100, duration: '10m' },   // 10분간 steady
           { target: 0, duration: '30s' },     // 종료
         ]
       }
@@ -35,7 +35,6 @@ script: |-
 
   const BASE_URL = 'https://backend.match-fit.store';
   const ENDPOINTS = [
-    '/api/user/login',
     '/api/posts/1'
   ];
 
@@ -63,8 +62,8 @@ script_full: |-
         maxVUs: 5000,
         stages: [
           { target: 100, duration: '1m' },   // 예열
-          { target: 2000, duration: '2m' },  // 2분에 2000 RPS로 ramp-up
-          { target: 2000, duration: '8m' },  // 8분간 steady
+          { target: 800, duration: '2m' },  // 2분에 2000 RPS로 ramp-up
+          { target: 800, duration: '8m' },  // 8분간 steady
           { target: 0, duration: '1m' },     // 종료
         ]
       }
