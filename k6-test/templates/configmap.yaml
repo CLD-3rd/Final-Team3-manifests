@@ -1,4 +1,4 @@
-# templates/configmap.yaml 
+# k6-test/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:

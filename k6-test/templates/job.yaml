@@ -1,20 +1,24 @@
- apiVersion: batch/v1
- kind: Job
- metadata:
-   name: {{ include "k6-test.fullname" . }}
- spec:
-   template:
-     spec:
-       containers:
-         - name: k6
-           image: grafana/k6:0.57.0
-           command: ["k6", "run", "/scripts/test.js"]
-           volumeMounts:
-             - name: k6-script
-               mountPath: /scripts
-       restartPolicy: Never
-       volumes:
-         - name: k6-script
-           configMap:
-             name: {{ include "k6-test.fullname" . }}-script
-   backoffLimit: 0
+# k6-test/templates/job.yaml  (수정본)
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "k6-test.fullname" . }}
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: k6
+          image: grafana/k6:0.57.0
+          args: ["run", "/scripts/test.js"]   
+          volumeMounts:
+            - name: k6-script
+              mountPath: /scripts
+      volumes:
+        - name: k6-script
+          configMap:
+            name: {{ include "k6-test.fullname" . }}-script
+            items:
+              - key: test.js
+                path: test.js

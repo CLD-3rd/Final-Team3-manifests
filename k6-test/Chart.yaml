@@ -1,6 +1,7 @@
- apiVersion: v2
- name: k6-test
- description: K6 부하 테스트를 위한 Helm 차트
- type: application
- version: 1.0.0
- appVersion: "0.57.0"
+# k6-test/Chart.yaml (수정본)
+apiVersion: v2
+name: k6-test
+description: K6 부하 테스트를 위한 Helm 차트
+type: application
+version: 1.0.0
+appVersion: "0.57.0"
