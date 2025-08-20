@@ -63,36 +63,14 @@ spec:
         kubecostModel:
           etl: false
           etlCloudUsage: false
-          assetReconciliation: false
           savingsCacheWarming: false
-          etlFileStoreEnabled: false
-          etlToDiskEnabled: false
+          assetReconciliation: false
           cloudCost:
             enabled: false
 
           extraEnv:
             - name: AWS_STS_REGIONAL_ENDPOINTS
               value: regional
-            - name: ETL_ENABLED
-              value: "false"
-            - name: ETL_CLOUD_USAGE_ENABLED
-              value: "false"
-            - name: ETL_ASSET_RECONCILIATION_ENABLED
-              value: "false"
-            - name: SAVINGS_CACHE_WARMING_ENABLED
-              value: "false"
-            - name: CLOUD_COST_ENABLED
-              value: "false"
-            - name: PV_ENABLED
-              value: "false"
-            - name: PRODUCT_ANALYTICS_ENABLED
-              value: "false"
-            - name: VALUES_REPORTING_ENABLED
-              value: "false"
-            - name: ERROR_REPORTING_ENABLED
-              value: "false"
-            - name: CLOUD_PROVIDER_API_KEY
-              value: ""
 
 
   destination:
@@ -104,8 +82,8 @@ spec:
     kind: Deployment
     name: kubecost-cost-analyzer
     namespace: monitoring
-    jqPathExpressions:
-    - '.spec.template.spec.containers[].env'
+    jsonPointers:
+    - /spec/template/spec/containers/0/env
 
   syncPolicy:
     automated:
