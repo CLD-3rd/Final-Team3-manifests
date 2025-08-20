@@ -11,4 +11,4 @@ name: k6-test
 description: K6 부하 테스트를 위한 Helm 차트
 type: application
 version: 0.1.0
-appVersion: "0.47.0"
+appVersion: "0.57.0"
