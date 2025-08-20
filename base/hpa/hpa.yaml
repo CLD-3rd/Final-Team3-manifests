@@ -9,11 +9,11 @@ spec:
     kind: Deployment               # 리소스 종류
     name: argocd-backend           # 타겟 Deployment 이름
   minReplicas: 2                   # 최소 Pod 개수
-  maxReplicas: 50                  # 최대 Pod 개수
+  maxReplicas: 20                  # 최대 Pod 개수
   metrics:                         # 스케일 기준 메트릭 정의
     - type: Resource               # 리소스 기반 메트릭
       resource:
         name: cpu                  # 측정할 리소스는 CPU
         target:
           type: Utilization        # 메트릭 타입: 사용률 기반
-          averageUtilization: 70   # 평균 CPU 사용률이 50% 넘으면 스케일 아웃, 낮으면 스케일 인
+          averageUtilization: 70   # 평균 CPU 사용률이 70% 넘으면 스케일 아웃, 낮으면 스케일 인
