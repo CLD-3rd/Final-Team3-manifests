@@ -1,3 +1,4 @@
+# 현재 테스트 모드
 testMode: full  # smoke | full
 
 script: |-
@@ -5,24 +6,14 @@ script: |-
   import { check, sleep } from 'k6';
 
   export const options = {
-    scenarios: {
-      steady_rps: {
-        executor: 'ramping-arrival-rate',
-        startRate: 0,
-        timeUnit: '1s',
-        preAllocatedVUs: 100,
-        maxVUs: 500,
-        stages: [
-          { target: 20, duration: '30s' },    // 빠른 ramp
-          { target: 100, duration: '1m' },    // 1분 내 200 RPS 도달
-          { target: 100, duration: '10m' },   // 10분간 steady
-          { target: 0, duration: '30s' },     // 종료
-        ]
-      }
-    },
+    stages: [
+      { duration: '30s', target: 5 },    // 예열
+      { duration: '1m',  target: 20 },   // 부하 증가
+      { duration: '30s', target: 0 },    // 종료
+    ],
     thresholds: {
-      http_req_duration: ['p(95)<1000'],
-      http_req_failed:   ['rate<0.05'],
+      http_req_duration: ['p(95)<1000'],  // 95% 요청이 1초 이내
+      http_req_failed:   ['rate<0.05'],   // 실패율 < 5%
     },
     ext: {
       output: {
@@ -35,6 +26,7 @@ script: |-
 
   const BASE_URL = 'https://backend.match-fit.store';
   const ENDPOINTS = [
+    '/api/user/login',
     '/api/posts/1'
   ];
 
@@ -42,9 +34,8 @@ script: |-
     for (const path of ENDPOINTS) {
       const res = http.get(`${BASE_URL}${path}`);
       check(res, { [`GET ${path} status 200`]: (r) => r.status === 200 });
+      sleep(1);
     }
-    // arrival-rate가 RPS를 제어하므로 불필요한 sleep 제거
-    sleep(0);
   }
 
 
@@ -53,25 +44,14 @@ script_full: |-
   import { check, sleep } from 'k6';
 
   export const options = {
-    scenarios: {
-      ramp_to_2000_rps: {
-        executor: 'ramping-arrival-rate',
-        startRate: 0,
-        timeUnit: '1s',
-        preAllocatedVUs: 500,
-        maxVUs: 1000,
-        stages: [
-          { target: 50, duration: '1m' },   // 예열
-          { target: 150, duration: '2m' },  
-          { target: 500, duration: '6m' },  // 8분간 steady
-          { target: 150, duration: '2m' },     
-          { target: 0, duration: '1m' },     // 종료
-        ]
-      }
-    },
+    stages: [
+      { duration: '6m',  target: 50 },   // 예열
+      { duration: '20m',  target: 300 },   // 부하 증가
+      { duration: '4m',  target: 0 },    // 종료
+    ],
     thresholds: {
-      http_req_duration: ['p(95)<1000'],
-      http_req_failed:   ['rate<0.05'],
+      http_req_duration: ['p(95)<1000'],  // 95% 요청이 1초 이내
+      http_req_failed:   ['rate<0.05'],   // 실패율 < 5%
     },
     ext: {
       output: {
@@ -104,7 +84,7 @@ script_full: |-
     'POPULAR'
   ];
 
-  // 날짜 범위 2025-08-23 ~ 2025-08-30
+  // 날짜 범위 2025-08-01 ~ 2025-08-10
   function getRandomDate() {
     const start = new Date('2025-08-23');
     const end = new Date('2025-08-30');
@@ -135,6 +115,5 @@ script_full: |-
       'status is 200': (r) => r.status === 200
     });
 
-    // arrival-rate가 RPS를 제어하므로 sleep 제거하여 최대한의 요청을 보냄
-    sleep(0);
+    sleep(0.1);
   }
