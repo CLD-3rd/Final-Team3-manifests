@@ -38,3 +38,6 @@ prometheus:
       matchLabels:
         prometheus: kube-prometheus-stack
         role: alert-rules
+
+    externalLabels:
+      cluster_id: matchfit-eks

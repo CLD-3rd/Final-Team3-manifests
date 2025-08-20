@@ -30,6 +30,7 @@ spec:
           enabled: false
 
         kubecostProductConfigs:
+          clusterName: matchfit-eks
           awsRegion: ap-northeast-2
 
         global:
@@ -98,14 +99,6 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
-
-  ignoreDifferences:
-  - group: apps
-    kind: Deployment
-    name: kubecost-cost-analyzer
-    namespace: monitoring
-    jqPathExpressions:
-    - '.spec.template.spec.containers[].env'
 
   syncPolicy:
     automated:
