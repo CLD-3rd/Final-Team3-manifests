@@ -1,63 +1,63 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kubecost
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"   # cluster-bootstrap(0), karpenter(1) 이후
-spec:
-  project: default
-  source:
-    repoURL: https://kubecost.github.io/cost-analyzer
-    chart: cost-analyzer
-    targetRevision: 1.104.0
-    helm:
-      values: |
-        prometheus:
-          enabled: false
-          nodeExporter:
-            enabled: false
-          server:
-            enabled: false
-            persistentVolume:
-              enabled: false
-          alertmanager:
-            enabled: false
-          pushgateway:
-            enabled: false
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kubecost
+#   namespace: argocd
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "2"   # cluster-bootstrap(0), karpenter(1) 이후
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://kubecost.github.io/cost-analyzer
+#     chart: cost-analyzer
+#     targetRevision: 1.104.0
+#     helm:
+#       values: |
+#         prometheus:
+#           enabled: false
+#           nodeExporter:
+#             enabled: false
+#           server:
+#             enabled: false
+#             persistentVolume:
+#               enabled: false
+#           alertmanager:
+#             enabled: false
+#           pushgateway:
+#             enabled: false
 
-        grafana:
-          enabled: false
+#         grafana:
+#           enabled: false
 
-        global:
-          prometheus:
-            enabled: false
-            fqdn: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
-          grafana:
-            fqdn: false
+#         global:
+#           prometheus:
+#             enabled: false
+#             fqdn: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+#           grafana:
+#             fqdn: false
 
-        serviceMonitor:
-          enabled: true
-          additionalLabels:
-            release: kube-prometheus-stack
+#         serviceMonitor:
+#           enabled: true
+#           additionalLabels:
+#             release: kube-prometheus-stack
 
-        prometheusRule:
-          enabled: true
-          additionalLabels:
-            release: kube-prometheus-stack
+#         prometheusRule:
+#           enabled: true
+#           additionalLabels:
+#             release: kube-prometheus-stack
 
-        kubecostFrontend:
-          ingress:
-            enabled: false
+#         kubecostFrontend:
+#           ingress:
+#             enabled: false
 
-        persistentVolume:
-          enabled: false
-        etl:
-          enabled: false
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+#         persistentVolume:
+#           enabled: false
+#         etl:
+#           enabled: false
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: monitoring
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
