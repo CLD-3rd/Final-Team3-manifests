@@ -29,10 +29,14 @@ spec:
         grafana:
           enabled: false
 
+        kubecostProductConfigs:
+          awsRegion: ap-northeast-2
+
         global:
           prometheus:
             enabled: false
             fqdn: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+          awsRegion: ap-northeast-2
           grafana:
             fqdn: false
 
