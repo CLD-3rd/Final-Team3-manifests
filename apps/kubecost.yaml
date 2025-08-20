@@ -54,6 +54,20 @@ spec:
           enabled: false
         etl:
           enabled: false
+
+        serviceAccount:
+          create: false
+          name: kubecost-cost-analyzer
+
+        kubecostModel:
+          extraEnv:
+            - name: AWS_REGION
+              value: ap-northeast-2
+            - name: AWS_DEFAULT_REGION
+              value: ap-northeast-2
+            - name: CLOUD_PROVIDER
+              value: AWS
+
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
