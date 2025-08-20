@@ -1,19 +1,23 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
+
+ apiVersion: argoproj.io/v1alpha1
+ kind: Application
+ metadata:
   name: k6-test
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "10"
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
-    targetRevision: feat/s3-irsa
-    path: k6-test
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: k6-test
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
+ spec:
+   project: default
+   source:
+     repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
+     targetRevision: feat/s3-irsa
+     path: k6-test
+   destination:
+     server: https://kubernetes.default.svc
+     namespace: k6-test
+   syncPolicy:
+     automated:
+       prune: true
+       selfHeal: true
+     syncOptions:
+       - CreateNamespace=true

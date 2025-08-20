@@ -1,11 +1,8 @@
+# templates/configmap.yaml 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: k6-script
+  name: {{ include "k6-test.fullname" . }}-script
 data:
-  script.js: |-
-{{- if eq .Values.testMode "full" }}
-{{ .Values.script_full | nindent 4 }}
-{{- else }}
-{{ .Values.script | nindent 4 }}
-{{- end }}
+  test.js: |
+{{ .Values.config.script | nindent 4 }}

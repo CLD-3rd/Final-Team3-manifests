@@ -1,5 +1,5 @@
 defaultRules:
-  create: true   # 기본 RuleSet 생성 여부
+  create: true   
   rules:
     etcd: false
     general: false
@@ -56,7 +56,7 @@ alertmanager:
     receivers:
     - name: 'all-team'
       email_configs:
-      - to: 'dngl1232@gmail.com'
+      - to: 'dngl1232@gmail.com, kimrma370@gmail.com, alex62626@naver.com, wkdjh1019@gmail.com, 0616sis@gmail.com, shee2.won@gmail.com'
         headers:
           subject: '[MatchFit Monitoring] {{ .GroupLabels.alertname }} - {{ .Status | toUpper }}'
         html: |
@@ -80,7 +80,7 @@ alertmanager:
 
     - name: 'critical-alerts'
       email_configs:
-      - to: 'dngl1232@gmail.com'
+      - to: 'dngl1232@gmail.com, kimrma370@gmail.com, alex62626@naver.com, wkdjh1019@gmail.com, 0616sis@gmail.com, shee2.won@gmail.com'
         headers:
           subject: '[MatchFit Monitoring] CRITICAL - {{ .GroupLabels.alertname }}'
         html: |
@@ -107,7 +107,7 @@ alertmanager:
 
     - name: 'warning-alerts'
       email_configs:
-      - to: 'dngl1232@gmail.com'
+      - to: 'dngl1232@gmail.com, kimrma370@gmail.com, alex62626@naver.com, wkdjh1019@gmail.com, 0616sis@gmail.com, shee2.won@gmail.com'
         headers:
           subject: '[MatchFit Monitoring] WARNING - {{ .GroupLabels.alertname }}'
         html: |

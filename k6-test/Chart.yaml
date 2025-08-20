@@ -1,7 +1,6 @@
-# Helm 차트 메타데이터 (릴리스/의존성 관리용)
-apiVersion: v2
-name: k6-test                                   # 차트 이름 (앱 이름과 달라도 됨)
-description: Helm chart for running k6 load tests in EKS
-type: application
-version: 1.0.0                                   # 차트 버전(내부 관리용)
-appVersion: "0.57.0"                              # k6 컨테이너 버전 표시용(권장)
+ apiVersion: v2
+ name: k6-test
+ description: K6 부하 테스트를 위한 Helm 차트
+ type: application
+ version: 1.0.0
+ appVersion: "0.57.0"
