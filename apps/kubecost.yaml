@@ -31,13 +31,20 @@ spec:
 
         global:
           prometheus:
-            fqdn: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+            enabled: false
+            fqdn: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
           grafana:
-            fqdn: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local
+            fqdn: false
 
-        kubecostProductConfigs:
-          prometheusServerEndpoint: "http://prometheus-kube-prometheus-stack.monitoring.svc.cluster.local:9090"
-          grafanaURL: "http://grafana.monitoring.svc.cluster.local"
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
+
+        prometheusRule:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
 
         kubecostFrontend:
           ingress:
