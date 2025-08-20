@@ -44,7 +44,7 @@ alertmanager:
           severity: warning
         receiver: 'warning-alerts'
         group_interval: 2h
-        repeat_interval: 6h
+        repeat_interval: 8h
 
     inhibit_rules:
     - source_match:
