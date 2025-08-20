@@ -62,6 +62,7 @@ spec:
           name: kubecost-cost-analyzer
 
         kubecostModel:
+          clusterID: matchfit-eks
           etl: false
           etlCloudUsage: false
           assetReconciliation: false
@@ -72,6 +73,8 @@ spec:
             enabled: false
 
           extraEnv:
+            - name: CLUSTER_ID
+              value: matchfit-eks
             - name: AWS_STS_REGIONAL_ENDPOINTS
               value: regional
             - name: ETL_ENABLED
