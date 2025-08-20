@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kubecost
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: cost-analyzer
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: tcp-cost-analyzer
+      interval: 30s
