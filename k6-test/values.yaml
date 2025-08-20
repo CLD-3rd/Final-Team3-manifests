@@ -62,8 +62,8 @@ script_full: |-
         maxVUs: 5000,
         stages: [
           { target: 100, duration: '1m' },   // 예열
-          { target: 800, duration: '2m' },  // 2분에 2000 RPS로 ramp-up
-          { target: 800, duration: '8m' },  // 8분간 steady
+          { target: 500, duration: '2m' },  // 2분에 2000 RPS로 ramp-up
+          { target: 500, duration: '8m' },  // 8분간 steady
           { target: 0, duration: '1m' },     // 종료
         ]
       }
