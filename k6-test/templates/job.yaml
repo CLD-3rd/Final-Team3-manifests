@@ -1,34 +1,21 @@
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: k6-load-job
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookFailed
-    # (선택) values.yaml에 restartStamp 키를 넣고 아래 라인 주석 해제하면 커밋만으로 재실행 보장
-    # restartedAt: "{{ .Values.restartStamp | default "" }}"
-spec:
-  template:
-    spec:
-      containers:
-      - name: k6
-        image: grafana/k6:0.57.0
-        command: ["k6", "run", "/scripts/script.js"]
-        volumeMounts:
-          - name: script
-            mountPath: /scripts
-        # 예시값, 필요시 조정
-        resources:
-          requests:
-            cpu: "1"
-            memory: 512Mi
-          limits:
-            cpu: "4"
-            memory: 1Gi
-      volumes:
-        - name: script
-          configMap:
-            name: k6-script
-      dnsPolicy: ClusterFirst
-      restartPolicy: Never
-  backoffLimit: 0
+
+ apiVersion: batch/v1
+ kind: Job
+ metadata:
+   name: {{ include "k6-test.fullname" . }}
+ spec:
+   template:
+     spec:
+       containers:
+         - name: k6
+           image: grafana/k6:latest
+           command: ["k6", "run", "/scripts/test.js"]
+           volumeMounts:
+             - name: k6-script
+               mountPath: /scripts
+       restartPolicy: Never
+       volumes:
+         - name: k6-script
+           configMap:
+             name: {{ include "k6-test.fullname" . }}-script
+   backoffLimit: 0
