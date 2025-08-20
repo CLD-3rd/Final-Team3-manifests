@@ -233,9 +233,9 @@ spec:
     # MatchFit Backend 에러율 높음 (5xx > 5%)
     - alert: MatchFitBackendHighErrorRate
       expr: |
-        sum(rate(http_server_requests_seconds_count{job="argocd-argocd-backend", status=~"5.."}[5m])) by (uri)
+        sum(rate(http_server_requests_seconds_count{job="argocd-argocd-backend", status=~"5.."}[5m]))
         /
-        sum(rate(http_server_requests_seconds_count{job="argocd-argocd-backend"}[5m])) by (uri)
+        sum(rate(http_server_requests_seconds_count{job="argocd-argocd-backend"}[5m]))
         * 100 > 5
       for: 5m
       labels:
