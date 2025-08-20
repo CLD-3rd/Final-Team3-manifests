@@ -36,13 +36,13 @@
 # apiVersion: batch/v1
 # kind: Job
 # metadata:
-#   name: {{ include "k6-test.fullname" . }}
+#   name: k6-load-job
 # spec:
 #   template:
 #     spec:
 #       containers:
 #         - name: k6
-#           image: grafana/k6:latest
+#           image: grafana/k6:0.57.0
 #           command: ["k6", "run", "/scripts/test.js"]
 #           volumeMounts:
 #             - name: k6-script
