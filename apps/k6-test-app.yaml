@@ -11,7 +11,7 @@
    source:
      repoURL: https://github.com/CLD-3rd/Final-Team3-manifests.git
      targetRevision: feat/s3-irsa
-     path: apps/k6-test
+     path: k6-test
    destination:
      server: https://kubernetes.default.svc
      namespace: k6-test
