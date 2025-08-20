@@ -39,6 +39,9 @@ spec:
           grafana:
             fqdn: false
 
+        cloudCost:
+          enabled: false
+
         serviceMonitor:
           enabled: true
           additionalLabels:
@@ -55,12 +58,15 @@ spec:
 
         persistentVolume:
           enabled: false
-        etl:
-          enabled: false
 
         serviceAccount:
           create: false
           name: kubecost-cost-analyzer
+
+        kubecostModel:
+          extraEnv:
+            - name: AWS_STS_REGIONAL_ENDPOINTS
+              value: regional
 
   destination:
     server: https://kubernetes.default.svc
