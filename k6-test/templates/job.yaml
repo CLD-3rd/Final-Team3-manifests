@@ -1,3 +1,4 @@
+
  apiVersion: batch/v1
  kind: Job
  metadata:
@@ -7,7 +8,7 @@
      spec:
        containers:
          - name: k6
-           image: grafana/k6:0.57.0
+           image: grafana/k6:latest
            command: ["k6", "run", "/scripts/test.js"]
            volumeMounts:
              - name: k6-script

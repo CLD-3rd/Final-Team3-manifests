@@ -1,3 +1,4 @@
+
  apiVersion: v2
  name: k6-test
  description: K6 부하 테스트를 위한 Helm 차트
