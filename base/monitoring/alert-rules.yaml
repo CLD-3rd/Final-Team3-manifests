@@ -217,7 +217,7 @@ spec:
       expr: |
         histogram_quantile(0.95,
           sum(rate(http_server_requests_seconds_bucket{job="argocd-argocd-backend"}[5m])) by (le, uri)
-        ) > 2
+        ) * 1000 > 2000
       for: 10m
       labels:
         severity: warning
@@ -228,7 +228,7 @@ spec:
         service: matchfit-backend
       annotations:
         summary: "MatchFit Backend 응답시간 저하"
-        description: "MatchFit Backend API {{$labels.uri}}의 P95 응답시간이 {{$value | printf \"%.2f\"}}초입니다. 임계값: 2초"
+        description: "MatchFit Backend API {{$labels.uri}}의 P95 응답시간이 {{$value | printf \"%.0f\"}}ms입니다. 임계값: 2000ms"
 
     # MatchFit Backend 에러율 높음 (5xx > 5%)
     - alert: MatchFitBackendHighErrorRate
