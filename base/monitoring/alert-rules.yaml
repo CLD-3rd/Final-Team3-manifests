@@ -8,7 +8,7 @@ metadata:
     prometheus: kube-prometheus-stack
     role: alert-rules
 spec:
-  # groups:
+  groups: []
   
   # # EKS 인프라 알림
   # - name: eks-infrastructure
