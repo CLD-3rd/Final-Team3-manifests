@@ -39,9 +39,6 @@ spec:
           grafana:
             fqdn: false
 
-        cloudCost:
-          enabled: false
-
         serviceMonitor:
           enabled: true
           additionalLabels:
@@ -65,27 +62,29 @@ spec:
 
         kubecostModel:
           etl: false
+          etlCloudUsage: false
+          savingsCacheWarming: false
+          assetReconciliation: false
           cloudCost:
             enabled: false
-          savingsCacheWarming: false
-          etlCloudUsage: false
+
           extraEnv:
             - name: AWS_STS_REGIONAL_ENDPOINTS
               value: regional
-            - name: CLOUD_COST_ENABLED
-              value: "false"
-            - name: ETL_ENABLED
-              value: "false"
-            - name: ETL_CLOUD_USAGE_ENABLED
-              value: "false"
-            - name: SAVINGS_CACHE_WARMING_ENABLED
-              value: "false"
-            - name: ETL_ASSET_RECONCILIATION_ENABLED
-              value: "false"
+
 
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
+
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    name: kubecost-cost-analyzer
+    namespace: monitoring
+    jsonPointers:
+    - /spec/template/spec/containers/0/env
+
   syncPolicy:
     automated:
       prune: true
