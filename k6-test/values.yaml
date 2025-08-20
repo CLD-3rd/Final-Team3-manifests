@@ -56,7 +56,6 @@ config:
         sleep(1);
       });
     }
-  };
 
   const BASE_URL = 'https://backend.match-fit.store';
   const ENDPOINTS = [
