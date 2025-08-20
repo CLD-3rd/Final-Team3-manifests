@@ -36,7 +36,6 @@ spec:
           prometheus:
             enabled: false
             fqdn: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
-          awsRegion: ap-northeast-2
           grafana:
             fqdn: false
 
@@ -62,15 +61,6 @@ spec:
         serviceAccount:
           create: false
           name: kubecost-cost-analyzer
-
-        kubecostModel:
-          extraEnv:
-            - name: AWS_REGION
-              value: ap-northeast-2
-            - name: AWS_DEFAULT_REGION
-              value: ap-northeast-2
-            - name: CLOUD_PROVIDER
-              value: AWS
 
   destination:
     server: https://kubernetes.default.svc
