@@ -58,12 +58,13 @@ script_full: |-
         executor: 'ramping-arrival-rate',
         startRate: 0,
         timeUnit: '1s',
-        preAllocatedVUs: 800,
-        maxVUs: 5000,
+        preAllocatedVUs: 200,
+        maxVUs: 500,
         stages: [
-          { target: 100, duration: '1m' },   // 예열
-          { target: 500, duration: '2m' },  // 2분에 2000 RPS로 ramp-up
-          { target: 500, duration: '8m' },  // 8분간 steady
+          { target: 50, duration: '1m' },   // 예열
+          { target: 150, duration: '2m' },  
+          { target: 300, duration: '6m' },  // 8분간 steady
+          { target: 150, duration: '2m' },     
           { target: 0, duration: '1m' },     // 종료
         ]
       }
