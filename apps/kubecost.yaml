@@ -30,7 +30,6 @@ spec:
           enabled: false
 
         kubecostProductConfigs:
-          clusterName: matchfit-eks
           awsRegion: ap-northeast-2
 
         global:
@@ -62,7 +61,6 @@ spec:
           name: kubecost-cost-analyzer
 
         kubecostModel:
-          clusterID: matchfit-eks
           etl: false
           etlCloudUsage: false
           assetReconciliation: false
@@ -73,8 +71,6 @@ spec:
             enabled: false
 
           extraEnv:
-            - name: CLUSTER_ID
-              value: matchfit-eks
             - name: AWS_STS_REGIONAL_ENDPOINTS
               value: regional
             - name: ETL_ENABLED
@@ -102,6 +98,14 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
+
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    name: kubecost-cost-analyzer
+    namespace: monitoring
+    jqPathExpressions:
+    - '.spec.template.spec.containers[].env'
 
   syncPolicy:
     automated:
