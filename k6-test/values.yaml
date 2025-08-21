@@ -46,7 +46,7 @@ script_full: |-
   export const options = {
     stages: [
       { duration: '6m',  target: 50 },   // 예열
-      { duration: '20m',  target: 300 },   // 부하 증가
+      { duration: '20m',  target: 500 },   // 부하 증가
       { duration: '4m',  target: 0 },    // 종료
     ],
     thresholds: {
