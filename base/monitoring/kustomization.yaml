@@ -16,3 +16,4 @@ resources:
   - grafana-rbac.yaml
   - grafana-datasources.yaml
   - alert-rules.yaml
+  - prometheus-values.yaml
