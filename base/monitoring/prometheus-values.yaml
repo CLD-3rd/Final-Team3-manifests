@@ -1,0 +1,39 @@
+# manifest/base/monitoring/prometheus-values.yaml
+prometheus:
+  prometheusSpec:
+    # 디스크 보관 기간/크기(메모리에는 head block ~2h만 상주하므로
+    # retention은 디스크 사용량 관리 측면에서 중요)
+    retention: 24h
+    retentionSize: 15GB
+
+    # 기본 스크랩/평가 주기. 부하 환경에서 60s로 늘려 메모리/CPU 압박 완화
+    scrapeInterval: 60s
+    evaluationInterval: 60s
+
+    # 재시작 시 WAL 압축 (디스크 효율↑)
+    walCompression: true
+
+    # PV 붙여서 재시작해도 TSDB 유지
+    storageSpec:
+      volumeClaimTemplate:
+        metadata:
+          name: prometheus-storage
+        spec:
+          # storageClassName은 클러스터 기본(예: gp3) 사용. 커스텀이라면 명시하세요.
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+
+    # 리소스 여유 (테스트 환경 기준 넉넉히)
+    resources:
+      requests:
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        cpu: "2"
+        memory: 8Gi
+
+    # (옵션) 모니터링이 중요한 경우 우선순위 높이기
+    # priorityClassName: monitoring-critical
+
