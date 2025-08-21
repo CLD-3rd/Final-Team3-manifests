@@ -19,16 +19,16 @@ spec:
       requirements:
         - key: karpenter.k8s.aws/instance-category
           operator: In
-          values: ["t", "m", "r"]
+          values: ["c"]
         - key: "karpenter.k8s.aws/instance-family"
           operator: In
-          values: ["t3", "t3a", "m5", "r5"]  # t4g(arm64)도 고려
+          values: ["c7g", "c8g"]  # t4g(arm64)도 고려
         - key: karpenter.k8s.aws/instance-size
           operator: NotIn
           values: ["nano", "micro", "small"] # 일부 유형 제외
         - key: "karpenter.k8s.aws/instance-cpu"
           operator: In
-          values: ["2", "4"]
+          values: ["1", "2", "4"]
         - key: karpenter.k8s.aws/instance-generation  # 제거해도 무방
           operator: Gt
           values: ["2"]
