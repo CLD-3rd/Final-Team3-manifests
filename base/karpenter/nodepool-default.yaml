@@ -26,9 +26,9 @@ spec:
         - key: karpenter.k8s.aws/instance-size
           operator: NotIn
           values: ["nano", "micro", "small"] # 일부 유형 제외
-        - key: "karpenter.k8s.aws/instance-cpu"
-          operator: In
-          values: ["2", "4"]
+        # - key: "karpenter.k8s.aws/instance-cpu"
+        #   operator: In
+        #   values: ["2", "4"]
         - key: karpenter.k8s.aws/instance-generation  # 제거해도 무방
           operator: Gt
           values: ["2"]
@@ -43,12 +43,12 @@ spec:
           values: ["linux"]
         - key: karpenter.sh/capacity-type
           operator: In
-          # values: ["on-demand"]        # 상황에 맞게 설정
-          values: ["spot", "on-demand"]  # 상황에 맞게 설정
+          values: ["on-demand"]        # 상황에 맞게 설정
+          # values: ["spot", "on-demand"]  # 상황에 맞게 설정
       expireAfter: 720h # 참고: 이 값을 NodePool에서 변경하면 NodeClaim과 차이가 발생할 수 있음
   disruption:  # Karpenter가 통합(consolidation) 대상으로 고려할 노드의 유형을 설명
     consolidationPolicy: WhenEmptyOrUnderutilized  # 비어 있거나 충분히 활용되지 않는 모든 노드를 통합 대상으로 고려
-    consolidateAfter: 1m  # 파드가 노드에 추가되거나 제거된 후 노드를 통합하기까지 Karpenter가 대기할 시간
+    consolidateAfter: 5m  # 파드가 노드에 추가되거나 제거된 후 노드를 통합하기까지 Karpenter가 대기할 시간
     budgets:
     - nodes: 10%  # 동시에 정지되거나 교체될 수 있는 노드는 80%
   limits:  # 최대 한도

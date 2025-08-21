@@ -4,8 +4,8 @@ metadata:
   name: default
 spec:
   kubelet:  # 각 노드에 직접 설치되고 실행되는 데몬
-    podsPerCore: 10                  # 코어당 허용 가능한 파드 수
-    maxPods: 30                    # 최대 파드 수
+    # podsPerCore: 10                  # 코어당 허용 가능한 파드 수
+    # maxPods: 30                    # 최대 파드 수
     systemReserved:                # 시스템이 예약하는 리소스
       cpu: 100m
       memory: 100Mi
@@ -55,6 +55,14 @@ spec:
         karpenter.sh/discovery: matchfit-eks  # EC2 노드 보안 그룹에 해당 태그를 달아야 함 ***
 
   role: KarpenterNodeRole-matchfit-eks  # EC2 노드에 할당할 IAM Role 생성해야 함 ***
+
+  blockDeviceMappings:
+    - deviceName: /dev/xvda
+      ebs:
+        volumeType: gp3
+        volumeSize: 40Gi
+        iops: 6000
+        throughput: 250
 
   tags:
     Project: matchfit
