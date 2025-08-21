@@ -5,7 +5,7 @@ metadata:
 spec:
   kubelet:  # 각 노드에 직접 설치되고 실행되는 데몬
     podsPerCore: 10                  # 코어당 허용 가능한 파드 수
-    maxPods: 30                    # 최대 파드 수
+    maxPods: 40                    # 최대 파드 수
     systemReserved:                # 시스템이 예약하는 리소스
       cpu: 100m
       memory: 100Mi
