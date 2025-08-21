@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backend-grafana-dashboard
+  name: backend-metrics-dashboard
   namespace: monitoring
   labels:
     grafana_dashboard: "1"   # 반드시 values.yaml의 sidecar.label과 일치 (문자열 권장)
 data:
-  backend-dashboard.json: |-
+  backend-metrics-dashboard.json: |-
     {
       "annotations": {
         "list": [
@@ -27,7 +27,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 42,
+      "id": 36,
       "links": [],
       "panels": [
         {
@@ -35,7 +35,6 @@ data:
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "description": "5분간 발생한 모집글 리스트 조회 API 요청의 p95 값",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -97,7 +96,7 @@ data:
             "x": 0,
             "y": 0
           },
-          "id": 5,
+          "id": 6,
           "options": {
             "legend": {
               "calcs": [],
@@ -115,13 +114,13 @@ data:
           "targets": [
             {
               "editorMode": "code",
-              "expr": "histogram_quantile(\n  0.95,\n  sum(rate(method_execution_seconds_bucket{class=\"PostService\", method=\"findByFilters\"}[5m])) by (le)\n) * 1000",
+              "expr": "1000 * method_execution_seconds_sum{class=\"PostService\", method=\"findByFilters\"} \n/ method_execution_seconds_count{class=\"PostService\", method=\"findByFilters\"}",
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "Latency p95_GetPostsByList (ms)",
+          "title": "Average/Mean_GetPostLists (ms)",
           "type": "timeseries"
         },
         {
@@ -215,7 +214,11 @@ data:
           "type": "timeseries"
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "5분간 발생한 모집글 리스트 조회 API 요청의 p95 값",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -267,8 +270,7 @@ data:
                     "value": 80
                   }
                 ]
-              },
-              "unit": "req/s"
+              }
             },
             "overrides": []
           },
@@ -278,7 +280,7 @@ data:
             "x": 0,
             "y": 8
           },
-          "id": 1,
+          "id": 5,
           "options": {
             "legend": {
               "calcs": [],
@@ -296,14 +298,13 @@ data:
           "targets": [
             {
               "editorMode": "code",
-              "expr": "sum(rate(http_server_requests_seconds_count{job=\"argocd-argocd-backend\"}[1m]))",
-              "interval": "",
-              "legendFormat": "{{instance}}",
+              "expr": "histogram_quantile(\n  0.95,\n  sum(rate(method_execution_seconds_bucket{class=\"PostService\", method=\"findByFilters\"}[5m])) by (le)\n) * 1000",
+              "legendFormat": "__auto",
               "range": true,
               "refId": "A"
             }
           ],
-          "title": "RPS (requests/sec)",
+          "title": "Latency p95_GetPostsByList (ms)",
           "type": "timeseries"
         },
         {
@@ -453,7 +454,7 @@ data:
                   }
                 ]
               },
-              "unit": "ms"
+              "unit": "req/s"
             },
             "overrides": []
           },
@@ -462,6 +463,98 @@ data:
             "w": 12,
             "x": 0,
             "y": 16
+          },
+          "id": 1,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.1.0",
+          "targets": [
+            {
+              "editorMode": "code",
+              "expr": "sum(rate(http_server_requests_seconds_count{job=\"argocd-argocd-backend\"}[1m]))",
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "RPS (requests/sec)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "${DS_PROMETHEUS}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 24
           },
           "id": 2,
           "options": {
@@ -524,5 +617,5 @@ data:
       "timezone": "browser",
       "title": "MatchFit Backend - Core Metrics",
       "uid": "matchfit-backend-core",
-      "version": 4
+      "version": 2
     }

@@ -23,6 +23,9 @@ spec:
         - key: "karpenter.k8s.aws/instance-family"
           operator: In
           values: ["t3", "t3a", "m5", "r5"]  # t4g(arm64)도 고려
+        - key: karpenter.k8s.aws/instance-size
+          operator: NotIn
+          values: ["nano", "micro", "small"] # 일부 유형 제외
         - key: "karpenter.k8s.aws/instance-cpu"
           operator: In
           values: ["2", "4"]
@@ -31,7 +34,6 @@ spec:
           values: ["2"]
         - key: "topology.kubernetes.io/zone"
           operator: In
-          # values: ["ap-northeast-2a"]                                      # 상황에 맞게 설정
           values: ["ap-northeast-2a", "ap-northeast-2b", "ap-northeast-2c"]  # 상황에 맞게 설정
         - key: kubernetes.io/arch
           operator: In
@@ -48,7 +50,7 @@ spec:
     consolidationPolicy: WhenEmptyOrUnderutilized  # 비어 있거나 충분히 활용되지 않는 모든 노드를 통합 대상으로 고려
     consolidateAfter: 1m  # 파드가 노드에 추가되거나 제거된 후 노드를 통합하기까지 Karpenter가 대기할 시간
     budgets:
-    - nodes: 10%  # 동시에 정지되거나 교체될 수 있는 노드는 90%
+    - nodes: 10%  # 동시에 정지되거나 교체될 수 있는 노드는 80%
   limits:  # 최대 한도
     cpu: "100"
     memory: 200Gi
