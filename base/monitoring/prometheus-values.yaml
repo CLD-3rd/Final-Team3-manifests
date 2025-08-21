@@ -19,7 +19,7 @@ prometheus:
         metadata:
           name: prometheus-storage
         spec:
-          storageClassName: gp2
+          storageClassName: gp2-csi
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
